@@ -1,0 +1,804 @@
+import Complaint from '@/models/Complaint';
+import Contact from '@/models/Contact';
+import RawComplaint from '@/models/RawComplaint';
+import { notifyPoliceStationComplaintAlert } from './police-station-alert';
+
+function isValidMobileNumber(value: string): boolean {
+    const digits = value.replace(/\D/g, '');
+    if (digits.length === 10) return true;
+    if (digits.length === 12 && digits.startsWith('91')) return true;
+    return false;
+}
+
+const PASSPORT_CHARACTER_FORMS = new Set([
+    'sub_passport_delay',
+    'sub_passport_other',
+    'sub_character_delay',
+    'sub_character_other',
+]);
+
+const COMPLAINT_TYPES_HIDE_ID = new Set([
+    'sub_traffic_jam',
+    'sub_traffic_challan',
+    'sub_traffic_other',
+    'sub_lost_mobile_not_satisfied',
+    'sub_missing_person',
+]);
+
+const INFO_COMPLAINT_DB_TYPES = [
+    'info_extortion',
+    'info_adebazi',
+    'info_misbehavior',
+    'info_drugs',
+    'info_absconders',
+    'info_illegal',
+    'info_other',
+] as const;
+
+/** Saved complaints where the citizen is not given a Complaint ID — exclude from My Activities. */
+export const COMPLAINT_TYPES_EXCLUDED_FROM_MY_ACTIVITIES = new Set<string>([
+    ...[...COMPLAINT_TYPES_HIDE_ID].map((step) => step.replace(/^sub_/, '')),
+    ...INFO_COMPLAINT_DB_TYPES,
+]);
+
+function buildInformationThankYou(language: 'english' | 'hindi'): string {
+    return language === 'english'
+        ? `✅ *Thank you*\n\nYour information has been received. Hazaribagh Police appreciates your cooperation.`
+        : `✅ *धन्यवाद*\n\nआपकी सूचना प्राप्त हो गई है। हजारीबाग पुलिस आपके सहयोग के लिए धन्यवाद।`;
+}
+
+/** Info types saved immediately after the text form (no GPS step). */
+export const INFO_DIRECT_SAVE_TYPES = new Set([
+    'sub_info_drugs',
+    'sub_info_illegal',
+    'sub_info_other',
+]);
+
+/** Info types that may request an optional GPS pin after the form. */
+export const INFO_OPTIONAL_LOCATION_TYPES = new Set([
+    'sub_info_adebazi',
+    'sub_info_absconders',
+]);
+
+/** Harassment requires GPS of the incident place, then a photo step. */
+export const INFO_REQUIRED_LOCATION_TYPES = new Set(['sub_info_misbehavior']);
+
+function validateInfoForm(
+    formType: string,
+    lines: string[],
+    language: 'english' | 'hindi'
+): { isValid: boolean; errorMessage?: string; data?: Record<string, unknown> } {
+    const normalizedType = formType === 'sub_info_extortion' ? 'sub_info_adebazi' : formType;
+
+    if (normalizedType === 'sub_info_adebazi') {
+        if (lines.length < 5) {
+            return {
+                isValid: false,
+                errorMessage:
+                    language === 'english'
+                        ? `❌ *Incomplete Information*\n\nPlease provide (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Mobile Number\n*Line 3:* Adebazi Details\n*Line 4:* Place of Adebazi\n*Line 5:* Police Station Name\n\n*Example:*\nRavi Kumar\n9876543210\nLocal youths gather and create nuisance daily\nKorra market area\nSadar P.S.\n\nPlease try again.`
+                        : `❌ *अधूरी जानकारी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* अड्डेबाजी का विवरण\n*पंक्ति 4:* अड्डेबाजी का स्थान\n*पंक्ति 5:* पुलिस स्टेशन का नाम\n\nकृपया पुनः प्रयास करें।`,
+            };
+        }
+        if (!isValidMobileNumber(lines[1])) {
+            return {
+                isValid: false,
+                errorMessage:
+                    language === 'english'
+                        ? `❌ *Invalid Mobile Number*\n\n*Line 2* must be a valid 10-digit mobile number.`
+                        : `❌ *अमान्य मोबाइल नंबर*\n\n*पंक्ति 2* में वैध 10 अंकों का मोबाइल नंबर होना चाहिए।`,
+            };
+        }
+        return {
+            isValid: true,
+            data: {
+                name: lines[0],
+                location: lines[3],
+                policeStation: lines[4],
+                remarks: `Mobile: ${lines[1]}\nAdebazi details: ${lines[2]}\nPlace: ${lines[3]}`,
+            },
+        };
+    }
+
+    if (normalizedType === 'sub_info_misbehavior') {
+        if (lines.length < 5) {
+            return {
+                isValid: false,
+                errorMessage:
+                    language === 'english'
+                        ? `❌ *Incomplete Information*\n\nPlease provide (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Mobile Number\n*Line 3:* Place Name\n*Line 4:* Police Station Name\n*Line 5:* Harassment Details\n\nPlease try again.`
+                        : `❌ *अधूरी जानकारी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* स्थान का नाम\n*पंक्ति 4:* पुलिस स्टेशन का नाम\n*पंक्ति 5:* छेड़खानी का विवरण\n\nकृपया पुनः प्रयास करें।`,
+            };
+        }
+        if (!isValidMobileNumber(lines[1])) {
+            return {
+                isValid: false,
+                errorMessage:
+                    language === 'english'
+                        ? `❌ *Invalid Mobile Number*\n\n*Line 2* must be a valid 10-digit mobile number.`
+                        : `❌ *अमान्य मोबाइल नंबर*\n\n*पंक्ति 2* में वैध 10 अंकों का मोबाइल नंबर होना चाहिए।`,
+            };
+        }
+        return {
+            isValid: true,
+            data: {
+                name: lines[0],
+                location: lines[2],
+                policeStation: lines[3],
+                remarks: `Mobile: ${lines[1]}\nPlace: ${lines[2]}\nDetails: ${lines.slice(4).join('\n')}`,
+            },
+        };
+    }
+
+    if (normalizedType === 'sub_info_drugs' || normalizedType === 'sub_info_illegal') {
+        const labelEn = normalizedType === 'sub_info_drugs' ? 'Drugs/intoxication' : 'Illegal liquor';
+        const labelHi = normalizedType === 'sub_info_drugs' ? 'नशाखोरी/ड्रग्स' : 'अवैध शराब';
+        if (lines.length < 5) {
+            return {
+                isValid: false,
+                errorMessage:
+                    language === 'english'
+                        ? `❌ *Incomplete Information*\n\nPlease provide (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Mobile Number\n*Line 3:* Place of ${labelEn} activity\n*Line 4:* Police Station Name\n*Line 5:* Details\n\nPlease try again.`
+                        : `❌ *अधूरी जानकारी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* ${labelHi} गतिविधि का स्थान\n*पंक्ति 4:* पुलिस स्टेशन का नाम\n*पंक्ति 5:* विवरण\n\nकृपया पुनः प्रयास करें।`,
+            };
+        }
+        if (!isValidMobileNumber(lines[1])) {
+            return {
+                isValid: false,
+                errorMessage:
+                    language === 'english'
+                        ? `❌ *Invalid Mobile Number*\n\n*Line 2* must be a valid 10-digit mobile number.`
+                        : `❌ *अमान्य मोबाइल नंबर*\n\n*पंक्ति 2* में वैध 10 अंकों का मोबाइल नंबर होना चाहिए।`,
+            };
+        }
+        return {
+            isValid: true,
+            data: {
+                name: lines[0],
+                location: lines[2],
+                policeStation: lines[3],
+                remarks: `Mobile: ${lines[1]}\nActivity place: ${lines[2]}\nDetails: ${lines.slice(4).join('\n')}`,
+            },
+        };
+    }
+
+    if (normalizedType === 'sub_info_absconders') {
+        if (lines.length < 6) {
+            return {
+                isValid: false,
+                errorMessage:
+                    language === 'english'
+                        ? `❌ *Incomplete Information*\n\nPlease provide (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Mobile Number\n*Line 3:* Absconder's Name\n*Line 4:* Case Details (if known)\n*Line 5:* Place Last Seen\n*Line 6:* Police Station Name\n\nPlease try again.`
+                        : `❌ *अधूरी जानकारी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* फरार अपराधी का नाम\n*पंक्ति 4:* मामले का विवरण (यदि ज्ञात हो)\n*पंक्ति 5:* अंतिम बार देखा गया स्थान\n*पंक्ति 6:* पुलिस स्टेशन का नाम\n\nकृपया पुनः प्रयास करें।`,
+            };
+        }
+        if (!isValidMobileNumber(lines[1])) {
+            return {
+                isValid: false,
+                errorMessage:
+                    language === 'english'
+                        ? `❌ *Invalid Mobile Number*\n\n*Line 2* must be a valid 10-digit mobile number.`
+                        : `❌ *अमान्य मोबाइल नंबर*\n\n*पंक्ति 2* में वैध 10 अंकों का मोबाइल नंबर होना चाहिए।`,
+            };
+        }
+        return {
+            isValid: true,
+            data: {
+                name: lines[0],
+                location: lines[4],
+                policeStation: lines[5],
+                remarks: `Mobile: ${lines[1]}\nAbsconder: ${lines[2]}\nCase details: ${lines[3]}\nLast seen: ${lines[4]}`,
+            },
+        };
+    }
+
+    if (normalizedType === 'sub_info_other') {
+        if (lines.length < 4) {
+            return {
+                isValid: false,
+                errorMessage:
+                    language === 'english'
+                        ? `❌ *Incomplete Information*\n\nPlease provide (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Mobile Number\n*Line 3:* Police Station Name\n*Line 4:* Information Details\n\nPlease try again.`
+                        : `❌ *अधूरी जानकारी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* पुलिस स्टेशन का नाम\n*पंक्ति 4:* सूचना का विवरण\n\nकृपया पुनः प्रयास करें।`,
+            };
+        }
+        if (!isValidMobileNumber(lines[1])) {
+            return {
+                isValid: false,
+                errorMessage:
+                    language === 'english'
+                        ? `❌ *Invalid Mobile Number*\n\n*Line 2* must be a valid 10-digit mobile number.`
+                        : `❌ *अमान्य मोबाइल नंबर*\n\n*पंक्ति 2* में वैध 10 अंकों का मोबाइल नंबर होना चाहिए।`,
+            };
+        }
+        return {
+            isValid: true,
+            data: {
+                name: lines[0],
+                policeStation: lines[2],
+                remarks: `Mobile: ${lines[1]}\nDetails: ${lines.slice(3).join('\n')}`,
+            },
+        };
+    }
+
+    return { isValid: false, errorMessage: language === 'english' ? 'Unknown information type.' : 'अज्ञात सूचना प्रकार।' };
+}
+
+function validatePassportCharacterForm(
+    formType: string,
+    lines: string[],
+    language: 'english' | 'hindi'
+): { isValid: boolean; errorMessage?: string; data?: Record<string, unknown> } {
+    const isPassport = formType.startsWith('sub_passport');
+    const isDelay = formType.endsWith('_delay');
+
+    if (lines.length < 6) {
+        const appLabelEn = isPassport
+            ? 'Passport Application Number'
+            : 'Character Verification Application Number';
+        const appLabelHi = isPassport ? 'पासपोर्ट आवेदन संख्या' : 'चरित्र सत्यापन आवेदन संख्या';
+        const detailLabelEn = isDelay ? 'Remarks' : 'Report issue';
+        const detailLabelHi = isDelay ? 'टिप्पणी' : 'समस्या विवरण';
+
+        return {
+            isValid: false,
+            errorMessage:
+                language === 'english'
+                    ? `❌ *Incomplete Information*\n\nPlease provide (one per line):\n\n*Line 1:* Name of Applicant\n*Line 2:* ${appLabelEn}\n*Line 3:* Locality / Village\n*Line 4:* Mobile Number\n*Line 5:* Police Station Name\n*Line 6:* ${detailLabelEn}\n\n*Example:*\nRahul Kumar\nAB1234567\nKatkamsandi\n9876543210\nSadar P.S.\nVerification pending for 2 months\n\nPlease try again.`
+                    : `❌ *अधूरी जानकारी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आवेदक का नाम\n*पंक्ति 2:* ${appLabelHi}\n*पंक्ति 3:* इलाका / गाँव\n*पंक्ति 4:* मोबाइल नंबर\n*पंक्ति 5:* पुलिस स्टेशन का नाम\n*पंक्ति 6:* ${detailLabelHi}\n\n*उदाहरण:*\nराहुल कुमार\nAB1234567\nकटकमसंडी\n9876543210\nसदर थाना\n2 महीने से सत्यापन लंबित\n\nकृपया पुनः प्रयास करें।`,
+        };
+    }
+
+    if (!isValidMobileNumber(lines[3])) {
+        return {
+            isValid: false,
+            errorMessage:
+                language === 'english'
+                    ? `❌ *Invalid Mobile Number*\n\n*Line 4* must be a valid 10-digit mobile number.\n\n*Example:* 9876543210\n\nPlease try again with all details.`
+                    : `❌ *अमान्य मोबाइल नंबर*\n\n*पंक्ति 4* में वैध 10 अंकों का मोबाइल नंबर होना चाहिए।\n\n*उदाहरण:* 9876543210\n\nकृपया सभी विवरण के साथ पुनः प्रयास करें।`,
+        };
+    }
+
+    return {
+        isValid: true,
+        data: {
+            name: lines[0],
+            applicationNumber: lines[1],
+            location: lines[2],
+            policeStation: lines[4],
+            remarks: `Mobile: ${lines[3]}\n\n${lines.slice(5).join('\n')}`,
+        },
+    };
+}
+
+/**
+ * Validate form input based on complaint type
+ */
+export function validateFormInput(
+    formType: string,
+    userInput: string,
+    language: 'english' | 'hindi'
+): { isValid: boolean; errorMessage?: string; data?: Record<string, unknown> } {
+    const lines = userInput.trim().split('\n').map(line => line.trim()).filter(line => line);
+
+    if (PASSPORT_CHARACTER_FORMS.has(formType)) {
+        return validatePassportCharacterForm(formType, lines, language);
+    }
+
+    // Petition issues (police station chosen from list after form)
+    if (formType.startsWith('sub_petition')) {
+        if (lines.length < 5) {
+            return {
+                isValid: false,
+                errorMessage: language === 'english'
+                    ? `❌ *Incomplete Information*\n\nPlease provide:\n\n*Line 1:* Your Name\n*Line 2:* Father's Name\n*Line 3:* Address\n*Line 4:* Mobile Number\n*Line 5:* Issue Details\n\n*Example:*\nAmit Singh\nRakesh Singh\nWard 5, Hazaribagh\n9876543210\nPolice did not visit regarding my petition filed 5 days ago\n\nPlease try again.`
+                    : `❌ *अधूरी जानकारी*\n\nकृपया प्रदान करें:\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* पिता का नाम\n*पंक्ति 3:* पता\n*पंक्ति 4:* मोबाइल नंबर\n*पंक्ति 5:* समस्या विवरण\n\n*उदाहरण:*\nअमित सिंह\nराकेश सिंह\nवार्ड 5, हजारीबाग\n9876543210\n5 दिन पहले दायर याचिका के संबंध में पुलिस नहीं आई\n\nकृपया पुनः प्रयास करें।`,
+            };
+        }
+
+        return {
+            isValid: true,
+            data: {
+                name: lines[0],
+                fatherName: lines[1],
+                address: lines[2],
+                remarks: `Contact No: ${lines[3]}\n\n${lines.slice(4).join(' ')}`,
+            },
+        };
+    }
+
+    // Information — per-type validation (no shared father/address form)
+    if (formType.startsWith('sub_info_')) {
+        return validateInfoForm(formType, lines, language);
+    }
+
+    // Suggestion (PDF: Name, Father, Address, Mobile, Station, Suggestion)
+    if (formType === 'suggestion_form') {
+        if (lines.length < 6) {
+            return {
+                isValid: false,
+                errorMessage: language === 'english'
+                    ? `❌ *Incomplete Information*\n\nPlease provide (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Father's Name\n*Line 3:* Address\n*Line 4:* Mobile Number\n*Line 5:* Concerned Police Station\n*Line 6:* Your Suggestion\n\nPlease try again.`
+                    : `❌ *अधूरी जानकारी*\n\nकृपया प्रति पंक्ति एक विवरण भेजें:\n\n*पंक्ति 1:* नाम\n*पंक्ति 2:* पिता का नाम\n*पंक्ति 3:* पता\n*पंक्ति 4:* मोबाइल\n*पंक्ति 5:* संबंधित थाना\n*पंक्ति 6:* सुझाव\n\nकृपया पुनः प्रयास करें।`,
+            };
+        }
+
+        return {
+            isValid: true,
+            data: {
+                name: lines[0],
+                content: `Father's name: ${lines[1]}\nAddress: ${lines[2]}\nMobile: ${lines[3]}\nPolice station: ${lines[4]}\nSuggestion:\n${lines.slice(5).join('\n')}`,
+            },
+        };
+    }
+
+    // Traffic Jam — police station typed manually; saved directly
+    if (formType === 'sub_traffic_jam') {
+        if (lines.length < 5) {
+            return {
+                isValid: false,
+                errorMessage: language === 'english'
+                    ? `❌ *Incomplete Information*\n\nPlease provide (one per line):\n\n*Line 1:* Name\n*Line 2:* Mobile Number\n*Line 3:* Traffic Jam Location\n*Line 4:* Police Station Name\n*Line 5:* Remarks\n\n*Example:*\nRajeev Kumar\n9876543213\nTower Chowk\nSadar P.S.\nHeavy traffic congestion for the last hour\n\nPlease try again.`
+                    : `❌ *अधूरी जानकारी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* ट्रैफ़िक जाम का स्थान\n*पंक्ति 4:* पुलिस स्टेशन का नाम\n*पंक्ति 5:* टिप्पणी\n\n*उदाहरण:*\nराजीव कुमार\n9876543213\nटावर चौक\nसदर थाना\nपिछले एक घंटे से भारी ट्रैफ़िक जाम है\n\nकृपया पुनः प्रयास करें।`,
+            };
+        }
+
+        if (!isValidMobileNumber(lines[1])) {
+            return {
+                isValid: false,
+                errorMessage:
+                    language === 'english'
+                        ? `❌ *Invalid Mobile Number*\n\n*Line 2* must be a valid 10-digit mobile number.\n\nPlease try again with all details.`
+                        : `❌ *अमान्य मोबाइल नंबर*\n\n*पंक्ति 2* में वैध 10 अंकों का मोबाइल नंबर होना चाहिए।\n\nकृपया सभी विवरण के साथ पुनः प्रयास करें।`,
+            };
+        }
+
+        return {
+            isValid: true,
+            data: {
+                name: lines[0],
+                location: lines[2],
+                policeStation: lines[3],
+                remarks: `Contact No: ${lines[1]}\n\n${lines.slice(4).join(' ')}`,
+            },
+        };
+    }
+
+    // Traffic Challan — no father/address; police station typed manually
+    if (formType === 'sub_traffic_challan') {
+        if (lines.length < 5) {
+            return {
+                isValid: false,
+                errorMessage: language === 'english'
+                    ? `❌ *Incomplete Information*\n\nPlease provide (one per line):\n\n*Line 1:* Name\n*Line 2:* Mobile Number\n*Line 3:* Challan Number\n*Line 4:* Police Station Name\n*Line 5:* Report issue\n\nPlease try again.`
+                    : `❌ *अधूरी जानकारी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* चालान नंबर\n*पंक्ति 4:* पुलिस स्टेशन का नाम\n*पंक्ति 5:* समस्या विवरण\n\nकृपया पुनः प्रयास करें।`,
+            };
+        }
+
+        if (!isValidMobileNumber(lines[1])) {
+            return {
+                isValid: false,
+                errorMessage:
+                    language === 'english'
+                        ? `❌ *Invalid Mobile Number*\n\n*Line 2* must be a valid 10-digit mobile number.\n\nPlease try again with all details.`
+                        : `❌ *अमान्य मोबाइल नंबर*\n\n*पंक्ति 2* में वैध 10 अंकों का मोबाइल नंबर होना चाहिए।\n\nकृपया सभी विवरण के साथ पुनः प्रयास करें।`,
+            };
+        }
+
+        return {
+            isValid: true,
+            data: {
+                name: lines[0],
+                challanNumber: lines[2],
+                policeStation: lines[3],
+                remarks: `Mobile: ${lines[1]}\nIssue: ${lines.slice(4).join(' ')}`,
+            },
+        };
+    }
+
+    // Traffic Other — no father/address; police station typed manually
+    if (formType === 'sub_traffic_other') {
+        if (lines.length < 4) {
+            return {
+                isValid: false,
+                errorMessage: language === 'english'
+                    ? `❌ *Incomplete Information*\n\nPlease provide (one per line):\n\n*Line 1:* Name\n*Line 2:* Mobile Number\n*Line 3:* Police Station Name\n*Line 4:* Report issue\n\nPlease try again.`
+                    : `❌ *अधूरी जानकारी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* पुलिस स्टेशन का नाम\n*पंक्ति 4:* समस्या विवरण\n\nकृपया पुनः प्रयास करें।`,
+            };
+        }
+
+        if (!isValidMobileNumber(lines[1])) {
+            return {
+                isValid: false,
+                errorMessage:
+                    language === 'english'
+                        ? `❌ *Invalid Mobile Number*\n\n*Line 2* must be a valid 10-digit mobile number.\n\nPlease try again with all details.`
+                        : `❌ *अमान्य मोबाइल नंबर*\n\n*पंक्ति 2* में वैध 10 अंकों का मोबाइल नंबर होना चाहिए।\n\nकृपया सभी विवरण के साथ पुनः प्रयास करें।`,
+            };
+        }
+
+        return {
+            isValid: true,
+            data: {
+                name: lines[0],
+                policeStation: lines[2],
+                remarks: `Mobile: ${lines[1]}\nIssue: ${lines.slice(3).join(' ')}`,
+            },
+        };
+    }
+
+    // Lost Mobile — "Not Satisfied" (police station typed; saved directly, no list)
+    if (formType === 'sub_lost_mobile_not_satisfied') {
+        if (lines.length < 5) {
+            return {
+                isValid: false,
+                errorMessage: language === 'english'
+                    ? `❌ *Incomplete Information*\n\nPlease provide (one per line):\n\n*Line 1:* Name\n*Line 2:* Your Mobile Number\n*Line 3:* Lost Mobile Number\n*Line 4:* IMEI Number\n*Line 5:* Police Station Name\n\n*Example:*\nSanjay Sharma\n9876543210\n9876543211\n359123456789012\nSadar P.S.\n\nPlease try again.`
+                    : `❌ *अधूरी जानकारी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* नाम\n*पंक्ति 2:* आपका मोबाइल नंबर\n*पंक्ति 3:* खोया मोबाइल नंबर\n*पंक्ति 4:* IMEI नंबर\n*पंक्ति 5:* पुलिस स्टेशन का नाम\n\n*उदाहरण:*\nसंजय शर्मा\n9876543210\n9876543211\n359123456789012\nसदर थाना\n\nकृपया पुनः प्रयास करें।`,
+            };
+        }
+
+        if (!isValidMobileNumber(lines[1])) {
+            return {
+                isValid: false,
+                errorMessage:
+                    language === 'english'
+                        ? `❌ *Invalid Mobile Number*\n\n*Line 2* must be a valid 10-digit mobile number.\n\nPlease try again with all details.`
+                        : `❌ *अमान्य मोबाइल नंबर*\n\n*पंक्ति 2* में वैध 10 अंकों का मोबाइल नंबर होना चाहिए।\n\nकृपया सभी विवरण के साथ पुनः प्रयास करें।`,
+            };
+        }
+
+        if (!isValidMobileNumber(lines[2])) {
+            return {
+                isValid: false,
+                errorMessage:
+                    language === 'english'
+                        ? `❌ *Invalid Lost Mobile Number*\n\n*Line 3* must be a valid 10-digit mobile number.\n\nPlease try again with all details.`
+                        : `❌ *अमान्य खोया मोबाइल नंबर*\n\n*पंक्ति 3* में वैध 10 अंकों का मोबाइल नंबर होना चाहिए।\n\nकृपया सभी विवरण के साथ पुनः प्रयास करें।`,
+            };
+        }
+
+        const imeiDigits = lines[3].replace(/\D/g, '');
+        if (imeiDigits.length < 14 || imeiDigits.length > 16) {
+            return {
+                isValid: false,
+                errorMessage:
+                    language === 'english'
+                        ? `❌ *Invalid IMEI Number*\n\n*Line 4* must be a valid IMEI number (usually 15 digits).\n\n*Example:* 359123456789012\n\nPlease try again.`
+                        : `❌ *अमान्य IMEI नंबर*\n\n*पंक्ति 4* में वैध IMEI नंबर होना चाहिए (आमतौर पर 15 अंक)।\n\n*उदाहरण:* 359123456789012\n\nकृपया पुनः प्रयास करें।`,
+            };
+        }
+
+        return {
+            isValid: true,
+            data: {
+                name: lines[0],
+                lostMobileNumber: lines[2],
+                policeStation: lines[4],
+                remarks: `Contact No: ${lines[1]}\nIMEI: ${lines[3]}${lines.length > 5 ? `\n\n${lines.slice(5).join('\n')}` : ''}`,
+            },
+        };
+    }
+
+    // Cyber Crime (only "Other Issues" is handled here; "Report Cyber Crime" redirects to cybercrime.gov.in / 1930)
+    if (formType === 'sub_cyber_other') {
+        if (lines.length < 6) {
+            return {
+                isValid: false,
+                errorMessage: language === 'english'
+                    ? `❌ *Incomplete Information*\n\nPlease provide:\n\n*Line 1:* Name\n*Line 2:* Father's Name\n*Line 3:* Address\n*Line 4:* Mobile Number\n*Line 5:* Concerned Police Station\n*Line 6:* Report issue\n\n*Example:*\nKamal Roy\nBijay Roy\nSadar, Hazaribagh\n9876543210\nCyber P.S.\nAmount fraudulently deducted from my account\n\nPlease try again.`
+                    : `❌ *अधूरी जानकारी*\n\nकृपया प्रदान करें:\n\n*पंक्ति 1:* नाम\n*पंक्ति 2:* पिता का नाम\n*पंक्ति 3:* पता\n*पंक्ति 4:* मोबाइल नंबर\n*पंक्ति 5:* संबंधित पुलिस स्टेशन\n*पंक्ति 6:* समस्या विवरण\n\n*उदाहरण:*\nकमल रॉय\nबिजय रॉय\nसदर, हजारीबाग\n9876543210\nसाइबर पीएस\nमेरे खाते से धोखाधड़ी से पैसे काटे गए\n\nकृपया पुनः प्रयास करें।`,
+            };
+        }
+        return {
+            isValid: true,
+            data: {
+                name: lines[0],
+                fatherName: lines[1],
+                address: lines[2],
+                policeStation: lines[4],
+                remarks: `Contact No: ${lines[3]}\n\n${lines.slice(5).join(' ')}`,
+            },
+        };
+    }
+
+    // Missing person — typed PS + lost address; optional photo then save (no PS list)
+    if (formType === 'sub_missing_person') {
+        if (lines.length < 5) {
+            return {
+                isValid: false,
+                errorMessage: language === 'english'
+                    ? `❌ *Incomplete Information*\n\nPlease provide (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Mobile Number\n*Line 3:* Police Station Name\n*Line 4:* Lost / Last Seen Address\n*Line 5:* Missing Person Details\n\n*Example:*\nAnita Kumari\n9876543210\nSadar P.S.\nLake Road area, near Tower Chowk, Hazaribagh\nMy younger brother (age 17) is missing since yesterday evening.\n\nPlease try again.`
+                    : `❌ *अधूरी जानकारी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* पुलिस स्टेशन का नाम\n*पंक्ति 4:* लापता / अंतिम बार देखा गया पता\n*पंक्ति 5:* लापता व्यक्ति का विवरण\n\n*उदाहरण:*\nअनीता कुमारी\n9876543210\nसदर थाना\nलेक रोड क्षेत्र, टावर चौक के पास, हजारीबाग\nमेरा छोटा भाई (उम्र 17 वर्ष) कल शाम से लापता है।\n\nकृपया पुनः प्रयास करें।`,
+            };
+        }
+
+        if (!isValidMobileNumber(lines[1])) {
+            return {
+                isValid: false,
+                errorMessage:
+                    language === 'english'
+                        ? `❌ *Invalid Mobile Number*\n\n*Line 2* must be a valid 10-digit mobile number.\n\nPlease try again with all details.`
+                        : `❌ *अमान्य मोबाइल नंबर*\n\n*पंक्ति 2* में वैध 10 अंकों का मोबाइल नंबर होना चाहिए।\n\nकृपया सभी विवरण के साथ पुनः प्रयास करें।`,
+            };
+        }
+
+        return {
+            isValid: true,
+            data: {
+                name: lines[0],
+                policeStation: lines[2],
+                address: lines[3],
+                remarks: `Contact No: ${lines[1]}\n\nMissing person details:\n${lines.slice(4).join('\n')}`,
+            },
+        };
+    }
+
+    // Default
+    return {
+        isValid: true,
+        data: {
+            name: lines[0] || 'Not provided',
+            remarks: userInput,
+        },
+    };
+}
+
+/**
+ * Persist a submission that failed structured validation (wrong line count / format).
+ * Stored as a single raw text blob for staff review.
+ */
+export async function saveRawComplaint(
+    phoneNumber: string,
+    rawText: string,
+    flowStep: string
+): Promise<string | null> {
+    const connectDB = (await import('./db')).default;
+    await connectDB();
+
+    const doc = await RawComplaint.create({
+        phoneNumber,
+        rawText,
+        flowStep,
+        status: 'pending',
+    });
+
+    return doc.rawComplaintId || null;
+}
+
+/**
+ * Save complaint to database
+ */
+export async function saveComplaint(
+    phoneNumber: string,
+    complaintType: string,
+    data: Record<string, unknown>
+): Promise<string | null> {
+    // Import database connection
+    const connectDB = (await import('./db')).default;
+    await connectDB();
+
+    // Check if it's a review/suggestion
+    if (complaintType === 'suggestion_form') {
+        const Review = (await import('@/models/Review')).default;
+        await Review.create({
+            phoneNumber,
+            name: String(data.name || ''),
+            content: String(data.content || ''),
+            status: 'pending',
+        });
+        return null;
+    }
+
+    // Convert sub_xxx to xxx format for database
+    const dbComplaintType = complaintType.replace('sub_', '');
+
+    const complaint = await Complaint.create({
+        phoneNumber,
+        complaintType: dbComplaintType,
+        ...data,
+        status: 'pending',
+    });
+
+    // WhatsApp alert to the selected police station contact (skipped if station unknown / unmatched)
+    await notifyPoliceStationComplaintAlert({
+        policeStationName: String(data.policeStation || ''),
+        citizenPhone: phoneNumber,
+        complaintId: complaint.complaintId || null,
+        complaintType: complaint.complaintType,
+        complainantName: String(data.name || ''),
+        missingPersonPhotoUrl: String(data.missingPersonPhotoUrl || ''),
+    });
+
+    // complaintId is set by the pre-save hook
+    return complaint.complaintId || null;
+}
+
+/**
+ * Handle form submission
+ */
+export async function handleFormSubmission(
+    phoneNumber: string,
+    userInput: string,
+    flowState: { step: string; data?: Record<string, unknown> }
+): Promise<{
+    success: boolean;
+    message: string;
+    language: 'english' | 'hindi';
+    sendFollowUpMenu?: boolean;
+    awaitLocation?: boolean;
+    awaitStationSelection?: boolean;
+    awaitMissingPersonPhoto?: boolean;
+    awaitHarassmentPhoto?: boolean;
+    locationOptional?: boolean;
+    deferredComplaintType?: string;
+    deferredComplaintData?: Record<string, unknown>;
+}> {
+    // Import database connection
+    const connectDB = (await import('./db')).default;
+    await connectDB();
+
+    const contact = await Contact.findOne({ phoneNumber });
+    const language = contact?.language || 'english';
+
+    // Validate input
+    const validationResult = validateFormInput(flowState.step, userInput, language);
+
+    if (!validationResult.isValid) {
+        try {
+            await saveRawComplaint(phoneNumber, userInput, flowState.step);
+        } catch (err) {
+            console.error('Error saving raw (invalid-format) complaint:', err);
+        }
+        return {
+            success: false,
+            message: validationResult.errorMessage || '',
+            language,
+        };
+    }
+
+    // Information flows — direct save, optional GPS, or harassment GPS + photo.
+    if (flowState.step.startsWith('sub_info_')) {
+        const infoStep =
+            flowState.step === 'sub_info_extortion' ? 'sub_info_adebazi' : flowState.step;
+        const complaintData = validationResult.data || {};
+
+        if (INFO_DIRECT_SAVE_TYPES.has(infoStep)) {
+            try {
+                await saveComplaint(phoneNumber, infoStep, complaintData);
+                return {
+                    success: true,
+                    message: buildInformationThankYou(language),
+                    language,
+                    sendFollowUpMenu: true,
+                };
+            } catch (error) {
+                console.error('Error saving information:', error);
+                return {
+                    success: false,
+                    message:
+                        language === 'english'
+                            ? `❌ *Error*\n\nSorry, there was an error saving your information. Please try again.`
+                            : `❌ *त्रुटि*\n\nक्षमा करें, सूचना सहेजने में त्रुटि हुई। कृपया पुनः प्रयास करें।`,
+                    language,
+                };
+            }
+        }
+
+        const locationOptional = INFO_OPTIONAL_LOCATION_TYPES.has(infoStep);
+        const locationMessage =
+            infoStep === 'sub_info_misbehavior'
+                ? language === 'english'
+                    ? `📍 *Next Step: Share Location*\n\nPlease share the *location of the harassment incident* using the button below.`
+                    : `📍 *अगला चरण: स्थान साझा करें*\n\nकृपया नीचे दिए बटन से *छेड़खानी की घटना का स्थान* साझा करें।`
+                : locationOptional
+                  ? language === 'english'
+                      ? `📍 *Optional: Share Location*\n\nIf possible, share the location pin using the button below. You can also tap *Skip location* to submit without GPS.`
+                      : `📍 *वैकल्पिक: स्थान साझा करें*\n\nयदि संभव हो, नीचे दिए बटन से स्थान साझा करें। GPS के बिना भेजने के लिए *स्थान छोड़ें* चुनें।`
+                  : '';
+
+        return {
+            success: true,
+            message: locationMessage,
+            language,
+            awaitLocation: true,
+            locationOptional,
+            deferredComplaintType: infoStep,
+            deferredComplaintData: complaintData,
+        };
+    }
+
+    // Missing person: collect optional photo before save.
+    if (flowState.step === 'sub_missing_person') {
+        return {
+            success: true,
+            message: '',
+            language,
+            awaitMissingPersonPhoto: true,
+            deferredComplaintType: flowState.step,
+            deferredComplaintData: validationResult.data || {},
+        };
+    }
+
+    // Selected flows require final police-station selection from master data.
+    const stationSelectionSteps = new Set([
+        'sub_petition_not_visited',
+        'sub_petition_not_satisfied',
+        'sub_petition_other',
+    ]);
+    if (stationSelectionSteps.has(flowState.step)) {
+        return {
+            success: true,
+            message: language === 'english'
+                ? `🏢 *Final Step Required*\n\nPlease select the concerned police station to complete complaint registration.`
+                : `🏢 *अंतिम चरण आवश्यक*\n\nशिकायत दर्ज पूरी करने के लिए कृपया संबंधित पुलिस स्टेशन चुनें।`,
+            language,
+            awaitStationSelection: true,
+            deferredComplaintType: flowState.step,
+            deferredComplaintData: validationResult.data || {},
+        };
+    }
+
+    // Save to database
+    try {
+        const complaintId = await saveComplaint(phoneNumber, flowState.step, validationResult.data || {});
+
+        // Success message
+        if (flowState.step === 'suggestion_form') {
+            if (language === 'english') {
+                return {
+                    success: true,
+                    message: `✅ *Suggestion/Review Submitted*\n\nThank you for your valuable suggestion/review. We appreciate your input!`,
+                    language,
+                    sendFollowUpMenu: true,
+                };
+            } else {
+                return {
+                    success: true,
+                    message: `✅ *सुझाव/समीक्षा जमा की गई*\n\nआपके बहुमूल्य सुझाव/समीक्षा के लिए धन्यवाद। हम इसकी सराहना करते हैं!`,
+                    language,
+                    sendFollowUpMenu: true,
+                };
+            }
+        }
+
+        const idLine =
+            !COMPLAINT_TYPES_HIDE_ID.has(flowState.step) && complaintId
+                ? language === 'english'
+                    ? `\n\n🆔 *Complaint ID: ${complaintId}*\n_Please save this ID to track your complaint._`
+                    : `\n\n🆔 *शिकायत आईडी: ${complaintId}*\n_इस आईडी को सुरक्षित रखें, आपकी शिकायत ट्रैक करने के काम आएगी।_`
+                : '';
+
+        if (language === 'english') {
+            return {
+                success: true,
+                message: `✅ *Complaint Registered Successfully*\n\nYour complaint has been registered. Our team will review it and take appropriate action.${idLine}\n\nYou will be contacted soon. Thank you for your patience.`,
+                language,
+                sendFollowUpMenu: true,
+            };
+        } else {
+            return {
+                success: true,
+                message: `✅ *शिकायत सफलतापूर्वक दर्ज*\n\nआपकी शिकायत दर्ज कर ली गई है। हमारी टीम इसकी समीक्षा करेगी और उचित कार्रवाई करेगी।${idLine}\n\nजल्द ही आपसे संपर्क किया जाएगा। आपके धैर्य के लिए धन्यवाद।`,
+                language,
+                sendFollowUpMenu: true,
+            };
+        }
+    } catch (error) {
+        console.error('Error saving complaint:', error);
+
+        if (language === 'english') {
+            return {
+                success: false,
+                message: `❌ *Error*\n\nSorry, there was an error saving your complaint. Please try again later or contact us directly.`,
+                language,
+            };
+        } else {
+            return {
+                success: false,
+                message: `❌ *त्रुटि*\n\nक्षमा करें, आपकी शिकायत सहेजने में त्रुटि हुई। कृपया बाद में पुनः प्रयास करें या हमसे सीधे संपर्क करें।`,
+                language,
+            };
+        }
+    }
+}

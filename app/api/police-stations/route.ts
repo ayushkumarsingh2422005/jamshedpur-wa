@@ -1,0 +1,63 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { getSession } from '@/lib/auth';
+import connectDB from '@/lib/db';
+import PoliceStation from '@/models/PoliceStation';
+
+export async function GET() {
+    try {
+        const session = await getSession();
+        if (!session) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
+        await connectDB();
+        const stations = await PoliceStation.find({}).sort({ displayOrder: 1, name: 1 });
+        return NextResponse.json({ success: true, stations });
+    } catch (error) {
+        console.error('Error fetching police stations:', error);
+        return NextResponse.json({ error: 'Failed to fetch stations' }, { status: 500 });
+    }
+}
+
+export async function POST(request: NextRequest) {
+    try {
+        const session = await getSession();
+        if (!session) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
+        const data = await request.json();
+        await connectDB();
+
+        const governmentNumber = String(
+            data.governmentNumber || data.contactNumber || ''
+        ).trim();
+        if (!governmentNumber) {
+            return NextResponse.json({ error: 'Government number is required' }, { status: 400 });
+        }
+
+        const station = await PoliceStation.create({
+            name: data.name,
+            nameHindi: data.nameHindi,
+            address: data.address,
+            addressHindi: data.addressHindi,
+            district: data.district || 'Hazaribagh',
+            location: {
+                type: 'Point',
+                coordinates: [parseFloat(data.longitude), parseFloat(data.latitude)],
+            },
+            governmentNumber,
+            personalNumber: String(data.personalNumber || '').trim(),
+            inchargeName: data.inchargeName,
+            inchargeNameHindi: data.inchargeNameHindi,
+            displayOrder: Number.isFinite(Number(data.displayOrder)) ? Number(data.displayOrder) : 0,
+            showInAssociatedPsList: data.showInAssociatedPsList !== false,
+            isActive: data.isActive !== false,
+        });
+
+        return NextResponse.json({ success: true, station });
+    } catch (error) {
+        console.error('Error creating police station:', error);
+        return NextResponse.json({ error: 'Failed to create station' }, { status: 500 });
+    }
+}
