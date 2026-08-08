@@ -2,6 +2,9 @@ import { Suspense } from 'react';
 import { hasUsers } from '../actions/auth';
 import LoginForm from './LoginForm';
 
+/** Always re-check DB — otherwise a cached "no users" render keeps showing setup forever. */
+export const dynamic = 'force-dynamic';
+
 export default async function LoginPage() {
     const isSetupRequired = !(await hasUsers());
 
