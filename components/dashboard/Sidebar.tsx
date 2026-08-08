@@ -18,8 +18,8 @@ import {
     ClipboardList,
     Link2,
     X,
-    Shield,
 } from 'lucide-react';
+import Image from 'next/image';
 import {
     ADMIN_SECTION_META,
     NAV_GROUP_LABELS,
@@ -88,8 +88,15 @@ export default function Sidebar({ username, nav, mobileOpen = false, onClose }: 
         >
             <div className="h-16 px-5 flex items-center justify-between border-b border-slate-200 dark:border-white/10">
                 <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-600/25 shrink-0">
-                        <Shield className="w-5 h-5" />
+                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/95 flex items-center justify-center shrink-0 border border-slate-200/80 dark:border-white/10 overflow-hidden p-0.5">
+                        <Image
+                            src="/jamshedpur-police-logo.png"
+                            alt="Jamshedpur Police"
+                            width={36}
+                            height={36}
+                            className="w-full h-full object-contain"
+                            priority
+                        />
                     </div>
                     <div className="min-w-0">
                         <h1 className="font-bold text-sm leading-tight truncate text-slate-900 dark:text-white">

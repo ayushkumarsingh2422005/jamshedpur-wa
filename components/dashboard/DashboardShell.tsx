@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, type ReactNode } from 'react';
+import Image from 'next/image';
 import Sidebar from './Sidebar';
 import { Menu, MapPin } from 'lucide-react';
 import type { NavPermissions } from '@/lib/admin-permissions';
@@ -33,8 +34,15 @@ export default function DashboardShell({ username, nav, children }: DashboardShe
                     <Menu className="w-6 h-6" />
                 </button>
                 <div className="flex items-center gap-2 min-w-0 flex-1">
-                    <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white shadow-md shadow-blue-600/30">
-                        <MapPin className="w-4 h-4" />
+                    <div className="w-9 h-9 rounded-lg bg-white dark:bg-slate-800 flex items-center justify-center border border-slate-200 dark:border-slate-700 overflow-hidden p-0.5 shrink-0">
+                        <Image
+                            src="/jamshedpur-police-logo.png"
+                            alt="Jamshedpur Police"
+                            width={32}
+                            height={32}
+                            className="w-full h-full object-contain"
+                            priority
+                        />
                     </div>
                     <div className="min-w-0">
                         <span className="font-bold text-sm text-slate-900 dark:text-white block truncate">

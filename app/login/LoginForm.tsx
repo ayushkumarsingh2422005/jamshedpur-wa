@@ -6,7 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import { login, createFirstUser } from '../actions/auth';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import { Shield } from 'lucide-react';
+import Image from 'next/image';
 
 interface LoginFormProps {
     isSetupRequired: boolean;
@@ -26,8 +26,15 @@ export default function LoginForm({ isSetupRequired }: LoginFormProps) {
     return (
         <div className="w-full max-w-md bg-white dark:bg-slate-900 rounded-2xl shadow-2xl shadow-slate-900/10 p-8 border border-slate-200/80 dark:border-slate-800">
             <div className="text-center mb-8">
-                <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-linear-to-br from-blue-500 to-blue-800 flex items-center justify-center text-white shadow-lg shadow-blue-600/30">
-                    <Shield className="w-7 h-7" />
+                <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-white dark:bg-slate-800 flex items-center justify-center border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden p-1.5">
+                    <Image
+                        src="/jamshedpur-police-logo.png"
+                        alt="Jamshedpur Police"
+                        width={72}
+                        height={72}
+                        className="w-full h-full object-contain"
+                        priority
+                    />
                 </div>
                 <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
                     {isSetupRequired ? 'Welcome Admin' : 'Jamshedpur Police'}
