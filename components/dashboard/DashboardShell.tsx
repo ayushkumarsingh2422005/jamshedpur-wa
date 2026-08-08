@@ -38,7 +38,7 @@ export default function DashboardShell({ username, nav, children }: DashboardShe
                     </div>
                     <div className="min-w-0">
                         <span className="font-bold text-sm text-slate-900 dark:text-white block truncate">
-                            Hazaribagh Police
+                            Jamshedpur Police
                         </span>
                     </div>
                 </div>
@@ -66,7 +66,7 @@ export default function DashboardShell({ username, nav, children }: DashboardShe
                     <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
                         <MapPin className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                         <span className="font-medium text-slate-800 dark:text-slate-200">
-                            Hazaribagh Police, Jharkhand
+                            Jamshedpur Police, Jharkhand
                         </span>
                     </div>
                     <div className="flex items-center gap-3">

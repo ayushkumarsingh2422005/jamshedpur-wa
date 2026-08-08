@@ -106,7 +106,7 @@ export async function notifyPoliceStationComplaintAlert(params: {
                   ? `\n*Photo path:* ${rel}`
                   : '';
 
-        const text = `🔔 *Hazaribagh Police — New registration*
+        const text = `🔔 *Jamshedpur Police — New registration*
 
 *Station:* ${doc.name}
 *Type:* ${typeReadable}${idLine}

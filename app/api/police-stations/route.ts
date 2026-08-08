@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
             nameHindi: data.nameHindi,
             address: data.address,
             addressHindi: data.addressHindi,
-            district: data.district || 'Hazaribagh',
+            district: data.district || 'East Singhbhum',
             location: {
                 type: 'Point',
                 coordinates: [parseFloat(data.longitude), parseFloat(data.latitude)],

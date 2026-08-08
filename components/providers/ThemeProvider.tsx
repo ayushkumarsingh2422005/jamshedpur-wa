@@ -12,7 +12,7 @@ import {
 
 export type ThemeMode = 'light' | 'dark' | 'system';
 
-const STORAGE_KEY = 'hazaribagh-theme';
+const STORAGE_KEY = 'jamshedpur-theme';
 
 type ThemeContextValue = {
     theme: ThemeMode;

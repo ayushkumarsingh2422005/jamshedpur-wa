@@ -37,7 +37,7 @@ export default function PoliceStationForm({ initialData }: PoliceStationFormProp
         nameHindi: initialData?.nameHindi || '',
         address: initialData?.address || '',
         addressHindi: initialData?.addressHindi || '',
-        district: initialData?.district || 'Hazaribagh',
+        district: initialData?.district || 'East Singhbhum',
         governmentNumber: initialData?.governmentNumber || '',
         personalNumber: initialData?.personalNumber || '',
         inchargeName: initialData?.inchargeName || '',

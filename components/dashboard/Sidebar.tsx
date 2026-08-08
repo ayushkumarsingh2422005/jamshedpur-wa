@@ -93,7 +93,7 @@ export default function Sidebar({ username, nav, mobileOpen = false, onClose }: 
                     </div>
                     <div className="min-w-0">
                         <h1 className="font-bold text-sm leading-tight truncate text-slate-900 dark:text-white">
-                            Hazaribagh Police
+                            Jamshedpur Police
                         </h1>
                         <p className="text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-500">
                             WhatsApp Admin

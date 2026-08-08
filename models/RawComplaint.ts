@@ -53,7 +53,7 @@ RawComplaintSchema.pre('save', async function () {
         const year = new Date().getFullYear();
         const count = await mongoose.model('RawComplaint').countDocuments({});
         const serial = String(count + 1).padStart(5, '0');
-        this.rawComplaintId = `HZB-RAW-${year}-${serial}`;
+        this.rawComplaintId = `JSR-RAW-${year}-${serial}`;
     }
 });
 

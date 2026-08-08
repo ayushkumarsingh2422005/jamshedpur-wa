@@ -14,15 +14,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Hazaribagh WA Admin",
-  description: "Hazaribagh Police WhatsApp & Sathi App administration dashboard",
+  title: "Jamshedpur WA Admin",
+  description: "Jamshedpur Police WhatsApp & Sathi App administration dashboard",
 };
 
 /** Avoid flash of wrong theme before React hydrates */
 const themeInitScript = `
 (function(){
   try {
-    var t = localStorage.getItem('hazaribagh-theme');
+    var t = localStorage.getItem('jamshedpur-theme');
     var dark = t === 'dark' || ((t === 'system' || !t) && window.matchMedia('(prefers-color-scheme: dark)').matches);
     if (t === 'light') dark = false;
     document.documentElement.classList.toggle('dark', dark);

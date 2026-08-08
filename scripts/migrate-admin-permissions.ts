@@ -1,7 +1,7 @@
 #!/usr/bin/env npx tsx
 /**
  * Grant full super-admin access to all existing dashboard users.
- * Run from hazaribagh-wa: npm run migrate:admins
+ * Run from jamshedpur-wa: npm run migrate:admins
  */
 import { readFileSync, existsSync } from 'fs';
 import { resolve } from 'path';

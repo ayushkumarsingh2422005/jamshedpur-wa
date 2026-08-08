@@ -48,7 +48,7 @@ const PoliceStationSchema = new Schema<IPoliceStation>(
         district: {
             type: String,
             required: true,
-            default: 'Hazaribagh',
+            default: 'East Singhbhum',
         },
         location: {
             type: {

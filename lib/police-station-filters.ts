@@ -1,5 +1,5 @@
 /**
- * PoliceStation.displayOrder classification (Hazaribagh directory):
+ * PoliceStation.displayOrder classification (East Singhbhum directory):
  * - 1 = Police Station (P.S.)
  * - 2 = Out Post (O.P.)
  * - 0, 3, 4 = Offices (DSP / control room / etc.) — directory only, not nearest GPS

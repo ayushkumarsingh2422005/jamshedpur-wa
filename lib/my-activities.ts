@@ -84,8 +84,8 @@ export async function buildMyActivitiesMessage(
 
     lines.push(
         language === 'english'
-            ? `_For emergencies call *112*. District Control Room: *8002529348*_`
-            : `_आपातकाल में *112* पर कॉल करें। जिला नियंत्रण कक्ष: *8002529348*_`
+            ? `_For emergencies call *112*. District Control Room: *9431301355*_`
+            : `_आपातकाल में *112* पर कॉल करें। जिला नियंत्रण कक्ष: *9431301355*_`
     );
 
     let message = lines.join('\n');

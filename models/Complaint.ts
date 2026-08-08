@@ -134,7 +134,7 @@ ComplaintSchema.pre('save', async function () {
         const year = new Date().getFullYear();
         const count = await mongoose.model('Complaint').countDocuments({});
         const serial = String(count + 1).padStart(5, '0');
-        this.complaintId = `HZB-${year}-${serial}`;
+        this.complaintId = `JSR-${year}-${serial}`;
     }
 });
 

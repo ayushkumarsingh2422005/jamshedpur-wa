@@ -243,8 +243,8 @@ function buildMissingPersonPhotoPrompt(language: 'english' | 'hindi'): ChatbotRe
 
 function buildInformationSubmissionThankYou(language: 'english' | 'hindi'): string {
     return language === 'english'
-        ? `✅ *Thank you*\n\nYour information has been received. Hazaribagh Police appreciates your cooperation.`
-        : `✅ *धन्यवाद*\n\nआपकी सूचना प्राप्त हो गई है। हजारीबाग पुलिस आपके सहयोग के लिए धन्यवाद।`;
+        ? `✅ *Thank you*\n\nYour information has been received. Jamshedpur Police appreciates your cooperation.`
+        : `✅ *धन्यवाद*\n\nआपकी सूचना प्राप्त हो गई है। जमशेदपुर पुलिस आपके सहयोग के लिए धन्यवाद।`;
 }
 
 function buildComplaintSuccess(
@@ -375,12 +375,12 @@ export async function processChatbotMessage(
         }
 
         const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
-        const logoUrl = baseUrl ? `${baseUrl}/hazaribagh%20police%20logo.png` : undefined;
+        const logoUrl = baseUrl ? `${baseUrl}/jamshedpur-police-logo.png` : undefined;
 
         return {
             type: 'buttons',
             headerImageUrl: logoUrl,
-            bodyText: `*Welcome to Hazaribagh Police Official WhatsApp Chatbot*\n*हजारीबाग पुलिस आधिकारिक व्हाट्सएप चैटबॉट में आपका स्वागत है*\n\n🚨 *Important Contacts / महत्वपूर्ण नंबर:*\n📞 Emergency / आपातकाल: 112\n📞 District Control Room Hazaribagh: 06546264159 / 8002529348\n📞 Cyber Crime Helpline / साइबर अपराध: 1930\n\nPlease select your official language:\nकृपया अपनी आधिकारिक भाषा चुनें:`,
+            bodyText: `*Welcome to Jamshedpur Police Official WhatsApp Chatbot*\n*जमशेदपुर पुलिस आधिकारिक व्हाट्सएप चैटबॉट में आपका स्वागत है*\n\n🚨 *Important Contacts / महत्वपूर्ण नंबर:*\n📞 Emergency / आपातकाल: 112\n📞 District Control Room Jamshedpur: 0657-2431030 / 9431301355\n📞 Cyber Crime Helpline / साइबर अपराध: 1930\n\nPlease select your official language:\nकृपया अपनी आधिकारिक भाषा चुनें:`,
             buttons: [
                 { id: 'lang_english', title: 'English' },
                 { id: 'lang_hindi', title: 'हिंदी' },
@@ -748,16 +748,16 @@ async function showDisclaimerAndContacts(
     let message = '';
 
     if (language === 'english') {
-        message = `✅ *You have selected English language.*\n\nWe will provide you with information about Hazaribagh Police services in this language.\n\n`;
+        message = `✅ *You have selected English language.*\n\nWe will provide you with information about Jamshedpur Police services in this language.\n\n`;
         message += `⚠️ *BEWARE:* Beware of unauthorized WhatsApp chatbots asking you to share your personal details, click on links, or download apps. These can be scams to defraud you. If you receive such communication, please report immediately on *1930*.\n\n`;
-        message += `📋 *Disclaimer:* This WhatsApp Chatbot is only for Hazaribagh Police which is made to provide you services and resolve your queries related to Hazaribagh Police. This is a query-based information system. For urgent matters, please visit the nearest police station or call *112* or call District Control Room on *8002529348*.\n\n`;
+        message += `📋 *Disclaimer:* This WhatsApp Chatbot is only for Jamshedpur Police which is made to provide you services and resolve your queries related to Jamshedpur Police. This is a query-based information system. For urgent matters, please visit the nearest police station or call *112* or call District Control Room on *9431301355*.\n\n`;
         message += `📍 To find your *nearest police station*, choose *Location Service* from the menu and share your GPS location.\n\n`;
         message += `Please select a service from the menu below.`;
         message += `\n\n_Powered by DigiCraft Innovation Pvt. Ltd._`;
     } else {
-        message = `✅ *आपने हिंदी भाषा का चयन किया है।*\n\nहम आपको हजारीबाग पुलिस सेवाओं के बारे में जानकारी इसी भाषा में प्रदान करेंगे।\n\n`;
+        message = `✅ *आपने हिंदी भाषा का चयन किया है।*\n\nहम आपको जमशेदपुर पुलिस सेवाओं के बारे में जानकारी इसी भाषा में प्रदान करेंगे।\n\n`;
         message += `⚠️ *सावधान:* अनाधिकृत व्हाट्सएप चैटबॉट से सावधान रहे जो आपसे आपकी व्यक्तिगत जानकारी साझा करने, लिंक पर क्लिक करने और एप डाउनलोड करने के लिये कह रहे है तो आप धोखाघडी के शिकार हो सकते है। यदि आपको ऐसा कोई संदेश प्राप्त होता है तो इसकी जानकारी आप *1930* पर कॉल कर सकते है।\n\n`;
-        message += `📋 *अस्वीकरण:* यह व्हाट्सएप चैटबॉट केवल हजारीबाग पुलिस के लिए है, जो आपको सेवाएं प्रदान करने और हजारीबाग पुलिस से संबंधित आपके प्रश्नों का समाधान करने के लिए बनाया गया है। यह प्रश्न-आधारित सूचना प्रणाली है। *अति-आवश्यक* मामलों के लिए निकटतम पुलिस स्टेशन पर जाएं या *112* पर कॉल करें या जिला नियंत्रण कक्ष *8002529348* पर कॉल करें।\n\n`;
+        message += `📋 *अस्वीकरण:* यह व्हाट्सएप चैटबॉट केवल जमशेदपुर पुलिस के लिए है, जो आपको सेवाएं प्रदान करने और जमशेदपुर पुलिस से संबंधित आपके प्रश्नों का समाधान करने के लिए बनाया गया है। यह प्रश्न-आधारित सूचना प्रणाली है। *अति-आवश्यक* मामलों के लिए निकटतम पुलिस स्टेशन पर जाएं या *112* पर कॉल करें या जिला नियंत्रण कक्ष *9431301355* पर कॉल करें।\n\n`;
         message += `📍 अपना *निकटतम पुलिस स्टेशन* खोजने के लिए मेनू से *स्थान सेवा* चुनें और अपना GPS स्थान साझा करें।\n\n`;
         message += `कृपया नीचे दिए गए मेनू से एक सेवा चुनें।`;
         message += `\n\n_Powered by DigiCraft Innovation Pvt. Ltd._`;
@@ -984,7 +984,7 @@ function getLocationSubMenu(language: 'english' | 'hindi'): ChatbotResponse {
         return {
             type: 'list',
             bodyText:
-                '*Location-based services*\n\nYou can find police station locations in Hazaribagh district on Google Maps using coordinates published by the district. Choose an option below:',
+                '*Location-based services*\n\nYou can find police station locations in Jamshedpur district on Google Maps using coordinates published by the district. Choose an option below:',
             buttonText: 'Select Option',
             sections: [
                 {
@@ -1012,7 +1012,7 @@ function getLocationSubMenu(language: 'english' | 'hindi'): ChatbotResponse {
     return {
         type: 'list',
         bodyText:
-            '*स्थान आधारित सेवाएं*\n\nहजारीबाग जिले में पुलिस स्टेशनों के स्थान जिला द्वारा जारी निर्देशांक से Google Maps पर देखे जा सकते हैं। नीचे एक विकल्प चुनें:',
+            '*स्थान आधारित सेवाएं*\n\nजमशेदपुर जिले में पुलिस स्टेशनों के स्थान जिला द्वारा जारी निर्देशांक से Google Maps पर देखे जा सकते हैं। नीचे एक विकल्प चुनें:',
         buttonText: 'विकल्प चुनें',
         sections: [
             {
@@ -1174,7 +1174,7 @@ function getMissingPersonForm(language: 'english' | 'hindi'): ChatbotResponse {
     if (language === 'english') {
         return {
             type: 'buttons',
-            bodyText: `🧾 *Missing Person Report*\n\nPlease provide the details below (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Mobile Number\n*Line 3:* Police Station Name\n*Line 4:* Lost / Last Seen Address\n*Line 5:* Missing Person Details\n\n*Example:*\nAnita Kumari\n9876543210\nSadar P.S.\nLake Road area, near Tower Chowk, Hazaribagh\nMy younger brother (age 17) is missing since yesterday evening.\n\nAfter this, you may send a photo (optional). No police station list — type the station name on line 3.\n\nPlease reply with all details.`,
+            bodyText: `🧾 *Missing Person Report*\n\nPlease provide the details below (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Mobile Number\n*Line 3:* Police Station Name\n*Line 4:* Lost / Last Seen Address\n*Line 5:* Missing Person Details\n\n*Example:*\nAnita Kumari\n9876543210\nSakchi P.S.\nBistupur area, near Sakchi, Jamshedpur\nMy younger brother (age 17) is missing since yesterday evening.\n\nAfter this, you may send a photo (optional). No police station list — type the station name on line 3.\n\nPlease reply with all details.`,
             buttons: [{ id: 'menu', title: 'Main Menu' }],
             language,
         };
@@ -1182,7 +1182,7 @@ function getMissingPersonForm(language: 'english' | 'hindi'): ChatbotResponse {
 
     return {
         type: 'buttons',
-        bodyText: `🧾 *लापता व्यक्ति रिपोर्ट*\n\nकृपया नीचे दिए गए विवरण प्रति पंक्ति एक भेजें:\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* पुलिस स्टेशन का नाम\n*पंक्ति 4:* लापता / अंतिम बार देखा गया पता\n*पंक्ति 5:* लापता व्यक्ति का विवरण\n\n*उदाहरण:*\nअनीता कुमारी\n9876543210\nसदर थाना\nलेक रोड क्षेत्र, टावर चौक के पास, हजारीबाग\nमेरा छोटा भाई (उम्र 17 वर्ष) कल शाम से लापता है।\n\nइसके बाद फोटो (वैकल्पिक)। थाना सूची नहीं — पंक्ति 3 में नाम लिखें।\n\nकृपया सभी विवरण भेजें।`,
+        bodyText: `🧾 *लापता व्यक्ति रिपोर्ट*\n\nकृपया नीचे दिए गए विवरण प्रति पंक्ति एक भेजें:\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* पुलिस स्टेशन का नाम\n*पंक्ति 4:* लापता / अंतिम बार देखा गया पता\n*पंक्ति 5:* लापता व्यक्ति का विवरण\n\n*उदाहरण:*\nअनीता कुमारी\n9876543210\nसाकची थाना\nबिस्तुपुर क्षेत्र, साकची के पास, जमशेदपुर\nमेरा छोटा भाई (उम्र 17 वर्ष) कल शाम से लापता है।\n\nइसके बाद फोटो (वैकल्पिक)। थाना सूची नहीं — पंक्ति 3 में नाम लिखें।\n\nकृपया सभी विवरण भेजें।`,
         buttons: [{ id: 'menu', title: 'मुख्य मेनू' }],
         language,
     };
@@ -1251,14 +1251,14 @@ function getSuggestionForm(language: 'english' | 'hindi'): ChatbotResponse {
     if (language === 'english') {
         return {
             type: 'buttons',
-            bodyText: `💡 *Suggestion*\n\nIf you have any suggestion related to the police, please reply (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Father's Name\n*Line 3:* Address\n*Line 4:* Mobile Number\n*Line 5:* Concerned Police Station\n*Line 6:* Your Suggestion\n\n*Example:*\nRahul Kumar\nSunil Kumar\nWard 3, Sadar, Hazaribagh\n9876543210\nSadar P.S.\nMore community outreach programmes in rural areas.\n\nPlease reply with all details.`,
+            bodyText: `💡 *Suggestion*\n\nIf you have any suggestion related to the police, please reply (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Father's Name\n*Line 3:* Address\n*Line 4:* Mobile Number\n*Line 5:* Concerned Police Station\n*Line 6:* Your Suggestion\n\n*Example:*\nRahul Kumar\nSunil Kumar\nWard 3, Sakchi, Jamshedpur\n9876543210\nSakchi P.S.\nMore community outreach programmes in rural areas.\n\nPlease reply with all details.`,
             buttons: [{ id: 'menu', title: 'Main Menu' }],
             language,
         };
     } else {
         return {
             type: 'buttons',
-            bodyText: `💡 *सुझाव*\n\nयदि आपके पास पुलिस से संबंधित कोई सुझाव है, कृपया प्रति पंक्ति एक विवरण भेजें:\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* पिता का नाम\n*पंक्ति 3:* पता\n*पंक्ति 4:* मोबाइल नंबर\n*पंक्ति 5:* संबंधित पुलिस स्टेशन\n*पंक्ति 6:* आपका सुझाव\n\n*उदाहरण:*\nराहुल कुमार\nसुनील कुमार\nवार्ड 3, सदर, हजारीबाग\n9876543210\nसदर थाना\nग्रामीण क्षेत्रों में अधिक जन-संपर्क कार्यक्रम चाहिए।\n\nकृपया सभी विवरण भेजें।`,
+            bodyText: `💡 *सुझाव*\n\nयदि आपके पास पुलिस से संबंधित कोई सुझाव है, कृपया प्रति पंक्ति एक विवरण भेजें:\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* पिता का नाम\n*पंक्ति 3:* पता\n*पंक्ति 4:* मोबाइल नंबर\n*पंक्ति 5:* संबंधित पुलिस स्टेशन\n*पंक्ति 6:* आपका सुझाव\n\n*उदाहरण:*\nराहुल कुमार\nसुनील कुमार\nवार्ड 3, साकची, जमशेदपुर\n9876543210\nसाकची थाना\nग्रामीण क्षेत्रों में अधिक जन-संपर्क कार्यक्रम चाहिए।\n\nकृपया सभी विवरण भेजें।`,
             buttons: [{ id: 'menu', title: 'मुख्य मेनू' }],
             language,
         };
@@ -1330,82 +1330,82 @@ async function handleSubServiceSelection(
     // Show appropriate form based on sub-service
     const formMessages: Record<string, { english: string; hindi: string }> = {
         sub_passport_delay: {
-            english: `📝 *Passport — Delay in Police Verification*\n\nPlease provide (one per line):\n\n*Line 1:* Name of Applicant\n*Line 2:* Passport Application Number\n*Line 3:* Locality / Village\n*Line 4:* Mobile Number\n*Line 5:* Police Station Name\n*Line 6:* Remarks\n\n*Example:*\nRahul Kumar\nAB1234567\nKatkamsandi\n9876543210\nSadar P.S.\nVerification pending since 2 months\n\nPlease reply with all details.`,
-            hindi: `📝 *पासपोर्ट — पुलिस सत्यापन में देरी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आवेदक का नाम\n*पंक्ति 2:* पासपोर्ट आवेदन संख्या\n*पंक्ति 3:* इलाका / गाँव\n*पंक्ति 4:* मोबाइल नंबर\n*पंक्ति 5:* पुलिस स्टेशन का नाम\n*पंक्ति 6:* टिप्पणी\n\n*उदाहरण:*\nराहुल कुमार\nAB1234567\nकटकमसंडी\n9876543210\nसदर थाना\n2 महीने से सत्यापन लंबित\n\nकृपया सभी विवरण के साथ उत्तर दें।`,
+            english: `📝 *Passport — Delay in Police Verification*\n\nPlease provide (one per line):\n\n*Line 1:* Name of Applicant\n*Line 2:* Passport Application Number\n*Line 3:* Locality / Village\n*Line 4:* Mobile Number\n*Line 5:* Police Station Name\n*Line 6:* Remarks\n\n*Example:*\nRahul Kumar\nAB1234567\nKadma\n9876543210\nSakchi P.S.\nVerification pending since 2 months\n\nPlease reply with all details.`,
+            hindi: `📝 *पासपोर्ट — पुलिस सत्यापन में देरी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आवेदक का नाम\n*पंक्ति 2:* पासपोर्ट आवेदन संख्या\n*पंक्ति 3:* इलाका / गाँव\n*पंक्ति 4:* मोबाइल नंबर\n*पंक्ति 5:* पुलिस स्टेशन का नाम\n*पंक्ति 6:* टिप्पणी\n\n*उदाहरण:*\nराहुल कुमार\nAB1234567\nकडमा\n9876543210\nसाकची थाना\n2 महीने से सत्यापन लंबित\n\nकृपया सभी विवरण के साथ उत्तर दें।`,
         },
         sub_passport_other: {
-            english: `📝 *Passport — Other Issues*\n\nPlease provide (one per line):\n\n*Line 1:* Name of Applicant\n*Line 2:* Passport Application Number\n*Line 3:* Locality / Village\n*Line 4:* Mobile Number\n*Line 5:* Police Station Name\n*Line 6:* Report issue\n\n*Example:*\nPriya Sharma\nCD9876543\nSadar\n9876543211\nSadar P.S.\nDocument submission issue at the PSK\n\nPlease reply with details.`,
-            hindi: `📝 *पासपोर्ट — अन्य समस्याएं*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आवेदक का नाम\n*पंक्ति 2:* पासपोर्ट आवेदन संख्या\n*पंक्ति 3:* इलाका / गाँव\n*पंक्ति 4:* मोबाइल नंबर\n*पंक्ति 5:* पुलिस स्टेशन का नाम\n*पंक्ति 6:* समस्या विवरण\n\n*उदाहरण:*\nप्रिया शर्मा\nCD9876543\nसदर\n9876543211\nसदर थाना\nपीएसके पर दस्तावेज जमा करने में समस्या\n\nकृपया विवरण के साथ उत्तर दें।`,
+            english: `📝 *Passport — Other Issues*\n\nPlease provide (one per line):\n\n*Line 1:* Name of Applicant\n*Line 2:* Passport Application Number\n*Line 3:* Locality / Village\n*Line 4:* Mobile Number\n*Line 5:* Police Station Name\n*Line 6:* Report issue\n\n*Example:*\nPriya Sharma\nCD9876543\nSakchi\n9876543211\nSakchi P.S.\nDocument submission issue at the PSK\n\nPlease reply with details.`,
+            hindi: `📝 *पासपोर्ट — अन्य समस्याएं*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आवेदक का नाम\n*पंक्ति 2:* पासपोर्ट आवेदन संख्या\n*पंक्ति 3:* इलाका / गाँव\n*पंक्ति 4:* मोबाइल नंबर\n*पंक्ति 5:* पुलिस स्टेशन का नाम\n*पंक्ति 6:* समस्या विवरण\n\n*उदाहरण:*\nप्रिया शर्मा\nCD9876543\nसाकची\n9876543211\nसाकची थाना\nपीएसके पर दस्तावेज जमा करने में समस्या\n\nकृपया विवरण के साथ उत्तर दें।`,
         },
         sub_character_delay: {
-            english: `📝 *Character Verification — Delay*\n\nPlease provide (one per line):\n\n*Line 1:* Name of Applicant\n*Line 2:* Character Verification Application Number\n*Line 3:* Locality / Village\n*Line 4:* Mobile Number\n*Line 5:* Police Station Name\n*Line 6:* Remarks\n\n*Example:*\nSunil Verma\nCH12345\nBarkagaon\n9876543212\nSadar P.S.\nVerification is delayed by 15 days\n\nPlease reply with all details.`,
-            hindi: `📝 *चरित्र सत्यापन — देरी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आवेदक का नाम\n*पंक्ति 2:* चरित्र सत्यापन आवेदन संख्या\n*पंक्ति 3:* इलाका / गाँव\n*पंक्ति 4:* मोबाइल नंबर\n*पंक्ति 5:* पुलिस स्टेशन का नाम\n*पंक्ति 6:* टिप्पणी\n\n*उदाहरण:*\nसुनील वर्मा\nCH12345\nबरकागांव\n9876543212\nसदर थाना\nसत्यापन 15 दिनों से लंबित है\n\nकृपया सभी विवरण के साथ उत्तर दें।`,
+            english: `📝 *Character Verification — Delay*\n\nPlease provide (one per line):\n\n*Line 1:* Name of Applicant\n*Line 2:* Character Verification Application Number\n*Line 3:* Locality / Village\n*Line 4:* Mobile Number\n*Line 5:* Police Station Name\n*Line 6:* Remarks\n\n*Example:*\nSunil Verma\nCH12345\nGolmuri\n9876543212\nSakchi P.S.\nVerification is delayed by 15 days\n\nPlease reply with all details.`,
+            hindi: `📝 *चरित्र सत्यापन — देरी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आवेदक का नाम\n*पंक्ति 2:* चरित्र सत्यापन आवेदन संख्या\n*पंक्ति 3:* इलाका / गाँव\n*पंक्ति 4:* मोबाइल नंबर\n*पंक्ति 5:* पुलिस स्टेशन का नाम\n*पंक्ति 6:* टिप्पणी\n\n*उदाहरण:*\nसुनील वर्मा\nCH12345\nगोलमुरी\n9876543212\nसाकची थाना\nसत्यापन 15 दिनों से लंबित है\n\nकृपया सभी विवरण के साथ उत्तर दें।`,
         },
         sub_character_other: {
-            english: `📝 *Character Verification — Other Issues*\n\nPlease provide (one per line):\n\n*Line 1:* Name of Applicant\n*Line 2:* Character Application Number\n*Line 3:* Locality / Village\n*Line 4:* Mobile Number\n*Line 5:* Police Station Name\n*Line 6:* Report issue\n\n*Example:*\nSunil Verma\nCH12345\nKatkamsandi\n9876543213\nSadar P.S.\nName is misspelled in the application\n\nPlease reply with details.`,
-            hindi: `📝 *चरित्र सत्यापन — अन्य समस्याएं*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आवेदक का नाम\n*पंक्ति 2:* चरित्र आवेदन संख्या\n*पंक्ति 3:* इलाका / गाँव\n*पंक्ति 4:* मोबाइल नंबर\n*पंक्ति 5:* पुलिस स्टेशन का नाम\n*पंक्ति 6:* समस्या विवरण\n\n*उदाहरण:*\nसुनील वर्मा\nCH12345\nकटकमसंडी\n9876543213\nसदर थाना\nआवेदन में नाम की वर्तनी गलत है\n\nकृपया विवरण के साथ उत्तर दें।`,
+            english: `📝 *Character Verification — Other Issues*\n\nPlease provide (one per line):\n\n*Line 1:* Name of Applicant\n*Line 2:* Character Application Number\n*Line 3:* Locality / Village\n*Line 4:* Mobile Number\n*Line 5:* Police Station Name\n*Line 6:* Report issue\n\n*Example:*\nSunil Verma\nCH12345\nKadma\n9876543213\nSakchi P.S.\nName is misspelled in the application\n\nPlease reply with details.`,
+            hindi: `📝 *चरित्र सत्यापन — अन्य समस्याएं*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आवेदक का नाम\n*पंक्ति 2:* चरित्र आवेदन संख्या\n*पंक्ति 3:* इलाका / गाँव\n*पंक्ति 4:* मोबाइल नंबर\n*पंक्ति 5:* पुलिस स्टेशन का नाम\n*पंक्ति 6:* समस्या विवरण\n\n*उदाहरण:*\nसुनील वर्मा\nCH12345\nकडमा\n9876543213\nसाकची थाना\nआवेदन में नाम की वर्तनी गलत है\n\nकृपया विवरण के साथ उत्तर दें।`,
         },
         sub_petition_not_visited: {
-            english: `📝 *Police Did Not Visit - Petition*\n\nPlease provide (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Father's Name\n*Line 3:* Address\n*Line 4:* Mobile Number\n*Line 5:* Issue Details\n\nAfter this you will select the concerned police station from the list.\n\n*Example:*\nAmit Singh\nRakesh Singh\nWard 5, Hazaribagh\n9876543210\nPolice did not visit regarding my petition filed 5 days ago\n\nPlease reply with all details.`,
-            hindi: `📝 *पुलिस नहीं आई - याचिका*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* पिता का नाम\n*पंक्ति 3:* पता\n*पंक्ति 4:* मोबाइल नंबर\n*पंक्ति 5:* समस्या विवरण\n\nइसके बाद आप सूची से संबंधित पुलिस स्टेशन चुनेंगे।\n\n*उदाहरण:*\nअमित सिंह\nराकेश सिंह\nवार्ड 5, हजारीबाग\n9876543210\n5 दिन पहले दायर याचिका के संबंध में पुलिस नहीं आई\n\nकृपया सभी विवरण के साथ उत्तर दें।`,
+            english: `📝 *Police Did Not Visit - Petition*\n\nPlease provide (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Father's Name\n*Line 3:* Address\n*Line 4:* Mobile Number\n*Line 5:* Issue Details\n\nAfter this you will select the concerned police station from the list.\n\n*Example:*\nAmit Singh\nRakesh Singh\nWard 5, Sakchi, Jamshedpur\n9876543210\nPolice did not visit regarding my petition filed 5 days ago\n\nPlease reply with all details.`,
+            hindi: `📝 *पुलिस नहीं आई - याचिका*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* पिता का नाम\n*पंक्ति 3:* पता\n*पंक्ति 4:* मोबाइल नंबर\n*पंक्ति 5:* समस्या विवरण\n\nइसके बाद आप सूची से संबंधित पुलिस स्टेशन चुनेंगे।\n\n*उदाहरण:*\nअमित सिंह\nराकेश सिंह\nवार्ड 5, साकची, जमशेदपुर\n9876543210\n5 दिन पहले दायर याचिका के संबंध में पुलिस नहीं आई\n\nकृपया सभी विवरण के साथ उत्तर दें।`,
         },
         sub_petition_not_satisfied: {
-            english: `📝 *Not Satisfied with Police Response*\n\nPlease provide (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Father's Name\n*Line 3:* Address\n*Line 4:* Mobile Number\n*Line 5:* Reason for Dissatisfaction\n\nAfter this you will select the concerned police station from the list.\n\n*Example:*\nVikash Yadav\nSuresh Yadav\nBarkagaon, Hazaribagh\n9876543211\nThe investigation was closed without taking my statement\n\nPlease reply with all details.`,
-            hindi: `📝 *पुलिस की प्रतिक्रिया से संतुष्ट नहीं*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* पिता का नाम\n*पंक्ति 3:* पता\n*पंक्ति 4:* मोबाइल नंबर\n*पंक्ति 5:* असंतोष का कारण\n\nइसके बाद आप सूची से संबंधित पुलिस स्टेशन चुनेंगे।\n\n*उदाहरण:*\nविकाश यादव\nसुरेश यादव\nबरकागांव, हजारीबाग\n9876543211\nमेरा बयान लिए बिना जांच बंद कर दी गई\n\nकृपया सभी विवरण के साथ उत्तर दें।`,
+            english: `📝 *Not Satisfied with Police Response*\n\nPlease provide (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Father's Name\n*Line 3:* Address\n*Line 4:* Mobile Number\n*Line 5:* Reason for Dissatisfaction\n\nAfter this you will select the concerned police station from the list.\n\n*Example:*\nVikash Yadav\nSuresh Yadav\nGolmuri, Jamshedpur\n9876543211\nThe investigation was closed without taking my statement\n\nPlease reply with all details.`,
+            hindi: `📝 *पुलिस की प्रतिक्रिया से संतुष्ट नहीं*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* पिता का नाम\n*पंक्ति 3:* पता\n*पंक्ति 4:* मोबाइल नंबर\n*पंक्ति 5:* असंतोष का कारण\n\nइसके बाद आप सूची से संबंधित पुलिस स्टेशन चुनेंगे।\n\n*उदाहरण:*\nविकाश यादव\nसुरेश यादव\nगोलमुरी, जमशेदपुर\n9876543211\nमेरा बयान लिए बिना जांच बंद कर दी गई\n\nकृपया सभी विवरण के साथ उत्तर दें।`,
         },
         sub_petition_other: {
-            english: `📝 *Other Petition Issues*\n\nPlease provide (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Father's Name\n*Line 3:* Address\n*Line 4:* Mobile Number\n*Line 5:* Issue Details\n\nAfter this you will select the concerned police station from the list.\n\n*Example:*\nNeha Kumari\nManoj Prasad\nKorra, Hazaribagh\n9876543212\nNeed an update on the status of my petition\n\nPlease reply with all details.`,
-            hindi: `📝 *अन्य याचिका समस्याएं*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* पिता का नाम\n*पंक्ति 3:* पता\n*पंक्ति 4:* मोबाइल नंबर\n*पंक्ति 5:* समस्या विवरण\n\nइसके बाद आप सूची से संबंधित पुलिस स्टेशन चुनेंगे।\n\n*उदाहरण:*\nनेहा कुमारी\nमनोज प्रसाद\nकोर्रा, हजारीबाग\n9876543212\nमुझे अपनी याचिका की स्थिति का अपडेट चाहिए\n\nकृपया सभी विवरण के साथ उत्तर दें।`,
+            english: `📝 *Other Petition Issues*\n\nPlease provide (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Father's Name\n*Line 3:* Address\n*Line 4:* Mobile Number\n*Line 5:* Issue Details\n\nAfter this you will select the concerned police station from the list.\n\n*Example:*\nNeha Kumari\nManoj Prasad\nJugsalai, Jamshedpur\n9876543212\nNeed an update on the status of my petition\n\nPlease reply with all details.`,
+            hindi: `📝 *अन्य याचिका समस्याएं*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* पिता का नाम\n*पंक्ति 3:* पता\n*पंक्ति 4:* मोबाइल नंबर\n*पंक्ति 5:* समस्या विवरण\n\nइसके बाद आप सूची से संबंधित पुलिस स्टेशन चुनेंगे।\n\n*उदाहरण:*\nनेहा कुमारी\nमनोज प्रसाद\nजुगसलाई, जमशेदपुर\n9876543212\nमुझे अपनी याचिका की स्थिति का अपडेट चाहिए\n\nकृपया सभी विवरण के साथ उत्तर दें।`,
         },
         sub_traffic_jam: {
-            english: `🚦 *Report Traffic Jam*\n\nPlease provide (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Mobile Number\n*Line 3:* Traffic Jam Location\n*Line 4:* Police Station Name\n*Line 5:* Remarks\n\n*Example:*\nRajeev Kumar\n9876543213\nTower Chowk\nSadar P.S.\nHeavy traffic congestion for the last hour\n\nPlease reply with all details.`,
-            hindi: `🚦 *ट्रैफ़िक जाम रिपोर्ट*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* ट्रैफ़िक जाम का स्थान\n*पंक्ति 4:* पुलिस स्टेशन का नाम\n*पंक्ति 5:* टिप्पणी\n\n*उदाहरण:*\nराजीव कुमार\n9876543213\nटावर चौक\nसदर थाना\nपिछले एक घंटे से भारी ट्रैफ़िक जाम है\n\nकृपया सभी विवरण के साथ उत्तर दें।`,
+            english: `🚦 *Report Traffic Jam*\n\nPlease provide (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Mobile Number\n*Line 3:* Traffic Jam Location\n*Line 4:* Police Station Name\n*Line 5:* Remarks\n\n*Example:*\nRajeev Kumar\n9876543213\nBistupur\nSakchi P.S.\nHeavy traffic congestion for the last hour\n\nPlease reply with all details.`,
+            hindi: `🚦 *ट्रैफ़िक जाम रिपोर्ट*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* ट्रैफ़िक जाम का स्थान\n*पंक्ति 4:* पुलिस स्टेशन का नाम\n*पंक्ति 5:* टिप्पणी\n\n*उदाहरण:*\nराजीव कुमार\n9876543213\nबिस्तुपुर\nसाकची थाना\nपिछले एक घंटे से भारी ट्रैफ़िक जाम है\n\nकृपया सभी विवरण के साथ उत्तर दें।`,
         },
         sub_traffic_challan: {
             english: `🚦 *Traffic Challan Issues*\n\nYou can submit challan online at *https://echallan.parivahan.gov.in* or visit Traffic Police Station.\n📞 Traffic Police Station: *9939257628*\n📍 https://www.google.com/maps?q=23.998764,85.365657\n\nTo report other challan-related issues, reply (one per line):\n\n*Line 1:* Name\n*Line 2:* Mobile Number\n*Line 3:* Challan Number\n*Line 4:* Police Station Name\n*Line 5:* Report issue\n\n*Example:*\nSanjay Gupta\n9876543214\nJH12345678\nTraffic P.S.\nI was wearing a helmet but still received a challan\n\nPlease reply with all details.`,
             hindi: `🚦 *ट्रैफ़िक चालान मुद्दे*\n\nचालान ऑनलाइन *https://echallan.parivahan.gov.in* पर जमा करें या ट्रैफ़िक पुलिस स्टेशन जाएं।\n📞 ट्रैफ़िक पुलिस स्टेशन: *9939257628*\n📍 https://www.google.com/maps?q=23.998764,85.365657\n\nअन्य चालान संबंधी समस्या के लिए (प्रति पंक्ति एक):\n\n*पंक्ति 1:* नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* चालान नंबर\n*पंक्ति 4:* पुलिस स्टेशन का नाम\n*पंक्ति 5:* समस्या विवरण\n\n*उदाहरण:*\nसंजय गुप्ता\n9876543214\nJH12345678\nट्रैफिक थाना\nहेलमेट पहनने के बावजूद चालान कट गया\n\nकृपया सभी विवरण भेजें।`,
         },
         sub_traffic_other: {
-            english: `🚦 *Other Traffic Issues*\n\nPlease provide (one per line):\n\n*Line 1:* Name\n*Line 2:* Mobile Number\n*Line 3:* Police Station Name\n*Line 4:* Report issue\n\n*Example:*\nPooja Dey\n9876543215\nSadar P.S.\nTraffic light not working at Bajrangbali Chowk\n\nPlease reply with all details.`,
-            hindi: `🚦 *अन्य यातायात की समस्या*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* पुलिस स्टेशन का नाम\n*पंक्ति 4:* समस्या विवरण\n\n*उदाहरण:*\nपूजा डे\n9876543215\nसदर थाना\nबजरंगबली चौक पर ट्रैफिक लाइट खराब है\n\nकृपया सभी विवरण भेजें।`,
+            english: `🚦 *Other Traffic Issues*\n\nPlease provide (one per line):\n\n*Line 1:* Name\n*Line 2:* Mobile Number\n*Line 3:* Police Station Name\n*Line 4:* Report issue\n\n*Example:*\nPooja Dey\n9876543215\nSakchi P.S.\nTraffic light not working at Bistupur Chowk\n\nPlease reply with all details.`,
+            hindi: `🚦 *अन्य यातायात की समस्या*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* पुलिस स्टेशन का नाम\n*पंक्ति 4:* समस्या विवरण\n\n*उदाहरण:*\nपूजा डे\n9876543215\nसाकची थाना\nबिस्तुपुर चौक पर ट्रैफिक लाइट खराब है\n\nकृपया सभी विवरण भेजें।`,
         },
         // sub_lost_mobile is handled separately above — redirects to CEIR portal
         sub_lost_mobile_not_satisfied: {
-            english: `📱 *Not Satisfied with Police Action*\n\nIf you're not satisfied with police action on your lost mobile, please reply (one per line):\n\n*Line 1:* Name\n*Line 2:* Your Mobile Number\n*Line 3:* Lost Mobile Number\n*Line 4:* IMEI Number\n*Line 5:* Police Station Name\n\n*Example:*\nSanjay Sharma\n9876543210\n9876543211\n359123456789012\nSadar P.S.\n\nPlease reply with all details.`,
-            hindi: `📱 *पुलिस कार्रवाई से संतुष्ट नहीं*\n\nयदि आप खोए मोबाइल पर पुलिस कार्रवाई से संतुष्ट नहीं हैं, कृपया प्रति पंक्ति एक विवरण भेजें:\n\n*पंक्ति 1:* नाम\n*पंक्ति 2:* आपका मोबाइल नंबर\n*पंक्ति 3:* खोया मोबाइल नंबर\n*पंक्ति 4:* IMEI नंबर\n*पंक्ति 5:* पुलिस स्टेशन का नाम\n\n*उदाहरण:*\nसंजय शर्मा\n9876543210\n9876543211\n359123456789012\nसदर थाना\n\nकृपया सभी विवरण के साथ उत्तर दें।`,
+            english: `📱 *Not Satisfied with Police Action*\n\nIf you're not satisfied with police action on your lost mobile, please reply (one per line):\n\n*Line 1:* Name\n*Line 2:* Your Mobile Number\n*Line 3:* Lost Mobile Number\n*Line 4:* IMEI Number\n*Line 5:* Police Station Name\n\n*Example:*\nSanjay Sharma\n9876543210\n9876543211\n359123456789012\nSakchi P.S.\n\nPlease reply with all details.`,
+            hindi: `📱 *पुलिस कार्रवाई से संतुष्ट नहीं*\n\nयदि आप खोए मोबाइल पर पुलिस कार्रवाई से संतुष्ट नहीं हैं, कृपया प्रति पंक्ति एक विवरण भेजें:\n\n*पंक्ति 1:* नाम\n*पंक्ति 2:* आपका मोबाइल नंबर\n*पंक्ति 3:* खोया मोबाइल नंबर\n*पंक्ति 4:* IMEI नंबर\n*पंक्ति 5:* पुलिस स्टेशन का नाम\n\n*उदाहरण:*\nसंजय शर्मा\n9876543210\n9876543211\n359123456789012\nसाकची थाना\n\nकृपया सभी विवरण के साथ उत्तर दें।`,
         },
         sub_missing_person: {
-            english: `🧾 *Missing Person Report*\n\nPlease provide the details below (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Mobile Number\n*Line 3:* Police Station Name\n*Line 4:* Lost / Last Seen Address\n*Line 5:* Missing Person Details\n\n*Example:*\nAnita Kumari\n9876543210\nSadar P.S.\nLake Road area, near Tower Chowk, Hazaribagh\nMy younger brother (age 17) is missing since yesterday evening.\n\nAfter your text, you may send a photo (optional).\n\nPlease reply with all details.`,
-            hindi: `🧾 *लापता व्यक्ति रिपोर्ट*\n\nकृपया नीचे दिए गए विवरण प्रति पंक्ति एक भेजें:\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* पुलिस स्टेशन का नाम\n*पंक्ति 4:* लापता / अंतिम बार देखा गया पता\n*पंक्ति 5:* लापता व्यक्ति का विवरण\n\n*उदाहरण:*\nअनीता कुमारी\n9876543210\nसदर थाना\nलेक रोड क्षेत्र, टावर चौक के पास, हजारीबाग\nमेरा छोटा भाई (उम्र 17 वर्ष) कल शाम से लापता है।\n\nटेक्स्ट के बाद फोटो (वैकल्पिक) भेज सकते हैं।\n\nकृपया सभी विवरण भेजें।`,
+            english: `🧾 *Missing Person Report*\n\nPlease provide the details below (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Mobile Number\n*Line 3:* Police Station Name\n*Line 4:* Lost / Last Seen Address\n*Line 5:* Missing Person Details\n\n*Example:*\nAnita Kumari\n9876543210\nSakchi P.S.\nBistupur area, near Sakchi, Jamshedpur\nMy younger brother (age 17) is missing since yesterday evening.\n\nAfter your text, you may send a photo (optional).\n\nPlease reply with all details.`,
+            hindi: `🧾 *लापता व्यक्ति रिपोर्ट*\n\nकृपया नीचे दिए गए विवरण प्रति पंक्ति एक भेजें:\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* पुलिस स्टेशन का नाम\n*पंक्ति 4:* लापता / अंतिम बार देखा गया पता\n*पंक्ति 5:* लापता व्यक्ति का विवरण\n\n*उदाहरण:*\nअनीता कुमारी\n9876543210\nसाकची थाना\nबिस्तुपुर क्षेत्र, साकची के पास, जमशेदपुर\nमेरा छोटा भाई (उम्र 17 वर्ष) कल शाम से लापता है।\n\nटेक्स्ट के बाद फोटो (वैकल्पिक) भेज सकते हैं।\n\nकृपया सभी विवरण भेजें।`,
         },
         // sub_cyber is handled separately above — redirects to cybercrime.gov.in / helpline 1930
         sub_cyber_other: {
-            english: `💻 *Other Cyber Issues*\n\nIf you have other cyber-related issues, please reply with:\n\n*Line 1:* Name\n*Line 2:* Father's Name\n*Line 3:* Address\n*Line 4:* Mobile Number\n*Line 5:* Concerned Police Station\n*Line 6:* Report issue\n\n*Example:*\nKamal Roy\nBijay Roy\nSadar, Hazaribagh\n9876543210\nCyber P.S.\nQuery regarding social media account hack\n\nPlease reply with details.`,
-            hindi: `💻 *अन्य साइबर मुद्दे*\n\nयदि आपके पास अन्य साइबर संबंधी मुद्दे हैं, तो कृपया उत्तर दें:\n\n*पंक्ति 1:* नाम\n*पंक्ति 2:* पिता का नाम\n*पंक्ति 3:* पता\n*पंक्ति 4:* मोबाइल नंबर\n*पंक्ति 5:* संबंधित पुलिस स्टेशन\n*पंक्ति 6:* समस्या विवरण\n\n*उदाहरण:*\nकमल रॉय\nबिजय रॉय\nसदर, हजारीबाग\n9876543210\nसाइबर पीएस\nसोशल मीडिया अकाउंट हैक के संबंध में प्रश्न\n\nकृपया विवरण के साथ उत्तर दें।`,
+            english: `💻 *Other Cyber Issues*\n\nIf you have other cyber-related issues, please reply with:\n\n*Line 1:* Name\n*Line 2:* Father's Name\n*Line 3:* Address\n*Line 4:* Mobile Number\n*Line 5:* Concerned Police Station\n*Line 6:* Report issue\n\n*Example:*\nKamal Roy\nBijay Roy\nSakchi, Jamshedpur\n9876543210\nCyber P.S.\nQuery regarding social media account hack\n\nPlease reply with details.`,
+            hindi: `💻 *अन्य साइबर मुद्दे*\n\nयदि आपके पास अन्य साइबर संबंधी मुद्दे हैं, तो कृपया उत्तर दें:\n\n*पंक्ति 1:* नाम\n*पंक्ति 2:* पिता का नाम\n*पंक्ति 3:* पता\n*पंक्ति 4:* मोबाइल नंबर\n*पंक्ति 5:* संबंधित पुलिस स्टेशन\n*पंक्ति 6:* समस्या विवरण\n\n*उदाहरण:*\nकमल रॉय\nबिजय रॉय\nसाकची, जमशेदपुर\n9876543210\nसाइबर पीएस\nसोशल मीडिया अकाउंट हैक के संबंध में प्रश्न\n\nकृपया विवरण के साथ उत्तर दें।`,
         },
         sub_info_adebazi: {
-            english: `ℹ️ *Adebazi Related Information*\n\nPlease provide (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Mobile Number\n*Line 3:* Adebazi Details\n*Line 4:* Place of Adebazi\n*Line 5:* Police Station Name\n\n*Example:*\nRavi Kumar\n9876543210\nLocal youths gather and create nuisance daily\nKorra market area\nSadar P.S.\n\nYou may optionally share a location pin after this.\n\nPlease reply with complete details.`,
-            hindi: `ℹ️ *अड्डेबाजी से संबंधित जानकारी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* अड्डेबाजी का विवरण\n*पंक्ति 4:* अड्डेबाजी का स्थान\n*पंक्ति 5:* पुलिस स्टेशन का नाम\n\n*उदाहरण:*\nरवि कुमार\n9876543210\nस्थानीय युवक रोज उपद्रव करते हैं\nकोर्रा बाजार क्षेत्र\nसदर थाना\n\nइसके बाद वैकल्पिक रूप से स्थान साझा कर सकते हैं।\n\nकृपया पूरी जानकारी भेजें।`,
+            english: `ℹ️ *Adebazi Related Information*\n\nPlease provide (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Mobile Number\n*Line 3:* Adebazi Details\n*Line 4:* Place of Adebazi\n*Line 5:* Police Station Name\n\n*Example:*\nRavi Kumar\n9876543210\nLocal youths gather and create nuisance daily\nGolmuri market area\nSakchi P.S.\n\nYou may optionally share a location pin after this.\n\nPlease reply with complete details.`,
+            hindi: `ℹ️ *अड्डेबाजी से संबंधित जानकारी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* अड्डेबाजी का विवरण\n*पंक्ति 4:* अड्डेबाजी का स्थान\n*पंक्ति 5:* पुलिस स्टेशन का नाम\n\n*उदाहरण:*\nरवि कुमार\n9876543210\nस्थानीय युवक रोज उपद्रव करते हैं\nगोलमुरी बाजार क्षेत्र\nसाकची थाना\n\nइसके बाद वैकल्पिक रूप से स्थान साझा कर सकते हैं।\n\nकृपया पूरी जानकारी भेजें।`,
         },
         sub_info_misbehavior: {
-            english: `ℹ️ *Harassment Related Information*\n\nPlease provide (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Mobile Number\n*Line 3:* Place Name\n*Line 4:* Police Station Name\n*Line 5:* Harassment Details\n\n*Example:*\nPooja Kumari\n9876543211\nBus stand, Sadar\nSadar P.S.\nSome boys harass school girls near the bus stand every morning.\n\nYou will then share the incident location pin and may send a photo of the harasser.\n\nPlease reply with complete details.`,
-            hindi: `ℹ️ *छेड़खानी से संबंधित जानकारी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* स्थान का नाम\n*पंक्ति 4:* पुलिस स्टेशन का नाम\n*पंक्ति 5:* छेड़खानी का विवरण\n\n*उदाहरण:*\nपूजा कुमारी\n9876543211\nबस स्टैंड, सदर\nसदर थाना\nसुबह बस स्टैंड पर कुछ लड़के स्कूल जाने वाली लड़कियों के साथ छेड़खानी करते हैं।\n\nइसके बाद घटना का स्थान पिन साझा करें और छेड़खानी करने वाले की फोटो (वैकल्पिक) भेज सकते हैं।\n\nकृपया पूरी जानकारी भेजें।`,
+            english: `ℹ️ *Harassment Related Information*\n\nPlease provide (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Mobile Number\n*Line 3:* Place Name\n*Line 4:* Police Station Name\n*Line 5:* Harassment Details\n\n*Example:*\nPooja Kumari\n9876543211\nBus stand, Sakchi\nSakchi P.S.\nSome boys harass school girls near the bus stand every morning.\n\nYou will then share the incident location pin and may send a photo of the harasser.\n\nPlease reply with complete details.`,
+            hindi: `ℹ️ *छेड़खानी से संबंधित जानकारी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* स्थान का नाम\n*पंक्ति 4:* पुलिस स्टेशन का नाम\n*पंक्ति 5:* छेड़खानी का विवरण\n\n*उदाहरण:*\nपूजा कुमारी\n9876543211\nबस स्टैंड, साकची\nसाकची थाना\nसुबह बस स्टैंड पर कुछ लड़के स्कूल जाने वाली लड़कियों के साथ छेड़खानी करते हैं।\n\nइसके बाद घटना का स्थान पिन साझा करें और छेड़खानी करने वाले की फोटो (वैकल्पिक) भेज सकते हैं।\n\nकृपया पूरी जानकारी भेजें।`,
         },
         sub_info_drugs: {
-            english: `ℹ️ *Drug / Intoxication Related Information*\n\nPlease provide (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Mobile Number\n*Line 3:* Place of Drugs/Intoxication Activity\n*Line 4:* Police Station Name\n*Line 5:* Details\n\n*Example:*\nAnil Verma\n9876543212\nOld warehouse area, Pelawal\nSadar P.S.\nPeople are selling and consuming drugs near the old warehouse at night.\n\nPlease reply with complete details.`,
-            hindi: `ℹ️ *नशाखोरी/ड्रग्स से संबंधित जानकारी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* नशाखोरी/ड्रग्स गतिविधि का स्थान\n*पंक्ति 4:* पुलिस स्टेशन का नाम\n*पंक्ति 5:* विवरण\n\n*उदाहरण:*\nअनिल वर्मा\n9876543212\nपेलावल, पुराने गोदाम क्षेत्र\nसदर थाना\nरात में पुराने गोदाम के पास ड्रग्स की बिक्री हो रही है।\n\nकृपया पूरी जानकारी भेजें।`,
+            english: `ℹ️ *Drug / Intoxication Related Information*\n\nPlease provide (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Mobile Number\n*Line 3:* Place of Drugs/Intoxication Activity\n*Line 4:* Police Station Name\n*Line 5:* Details\n\n*Example:*\nAnil Verma\n9876543212\nOld warehouse area, Jugsalai\nSakchi P.S.\nPeople are selling and consuming drugs near the old warehouse at night.\n\nPlease reply with complete details.`,
+            hindi: `ℹ️ *नशाखोरी/ड्रग्स से संबंधित जानकारी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* नशाखोरी/ड्रग्स गतिविधि का स्थान\n*पंक्ति 4:* पुलिस स्टेशन का नाम\n*पंक्ति 5:* विवरण\n\n*उदाहरण:*\nअनिल वर्मा\n9876543212\nजुगसलाई, पुराने गोदाम क्षेत्र\nसाकची थाना\nरात में पुराने गोदाम के पास ड्रग्स की बिक्री हो रही है।\n\nकृपया पूरी जानकारी भेजें।`,
         },
         sub_info_absconders: {
-            english: `ℹ️ *Absconding Criminals Information*\n\nPlease provide (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Mobile Number\n*Line 3:* Absconder's Name\n*Line 4:* Case Details (if known)\n*Line 5:* Place Last Seen\n*Line 6:* Police Station Name\n\n*Example:*\nDeepak Singh\n9876543213\nRamesh Yadav\nWanted in theft case — FIR unknown\nBarhi bazaar area\nBarhi P.S.\n\nYou may optionally share the absconder's location pin after this.\n\nPlease reply with complete details.`,
-            hindi: `ℹ️ *फरार अपराधियों की सूचना*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* फरार अपराधी का नाम\n*पंक्ति 4:* मामले का विवरण (यदि ज्ञात हो)\n*पंक्ति 5:* अंतिम बार देखा गया स्थान\n*पंक्ति 6:* पुलिस स्टेशन का नाम\n\n*उदाहरण:*\nदीपक सिंह\n9876543213\nरमेश यादव\nचोरी के मामले में वांछित\nबरही बाजार क्षेत्र\nबरही थाना\n\nइसके बाद वैकल्पिक रूप से फरार अपराधी का स्थान साझा कर सकते हैं।\n\nकृपया पूरी जानकारी भेजें।`,
+            english: `ℹ️ *Absconding Criminals Information*\n\nPlease provide (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Mobile Number\n*Line 3:* Absconder's Name\n*Line 4:* Case Details (if known)\n*Line 5:* Place Last Seen\n*Line 6:* Police Station Name\n\n*Example:*\nDeepak Singh\n9876543213\nRamesh Yadav\nWanted in theft case — FIR unknown\nJugsalai bazaar area\nJugsalai P.S.\n\nYou may optionally share the absconder's location pin after this.\n\nPlease reply with complete details.`,
+            hindi: `ℹ️ *फरार अपराधियों की सूचना*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* फरार अपराधी का नाम\n*पंक्ति 4:* मामले का विवरण (यदि ज्ञात हो)\n*पंक्ति 5:* अंतिम बार देखा गया स्थान\n*पंक्ति 6:* पुलिस स्टेशन का नाम\n\n*उदाहरण:*\nदीपक सिंह\n9876543213\nरमेश यादव\nचोरी के मामले में वांछित\nजुगसलाई बाजार क्षेत्र\nजुगसलाई थाना\n\nइसके बाद वैकल्पिक रूप से फरार अपराधी का स्थान साझा कर सकते हैं।\n\nकृपया पूरी जानकारी भेजें।`,
         },
         sub_info_illegal: {
-            english: `ℹ️ *Illegal Liquor Related Information*\n\nPlease provide (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Mobile Number\n*Line 3:* Place of Illegal Liquor Activity\n*Line 4:* Police Station Name\n*Line 5:* Details\n\n*Example:*\nSunita Devi\n9876543214\nCanal road, Churchu\nChurchu P.S.\nIllegal liquor is being sold openly every evening near the canal road.\n\nPlease reply with complete details.`,
-            hindi: `ℹ️ *अवैध शराब से संबंधित जानकारी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* अवैध शराब गतिविधि का स्थान\n*पंक्ति 4:* पुलिस स्टेशन का नाम\n*पंक्ति 5:* विवरण\n\n*उदाहरण:*\nसुनीता देवी\n9876543214\nनहर रोड, चर्चू\nचर्चू थाना\nहर शाम नहर रोड पर अवैध शराब की बिक्री हो रही है।\n\nकृपया पूरी जानकारी भेजें।`,
+            english: `ℹ️ *Illegal Liquor Related Information*\n\nPlease provide (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Mobile Number\n*Line 3:* Place of Illegal Liquor Activity\n*Line 4:* Police Station Name\n*Line 5:* Details\n\n*Example:*\nSunita Devi\n9876543214\nCanal road, Kadma\nKadma P.S.\nIllegal liquor is being sold openly every evening near the canal road.\n\nPlease reply with complete details.`,
+            hindi: `ℹ️ *अवैध शराब से संबंधित जानकारी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* अवैध शराब गतिविधि का स्थान\n*पंक्ति 4:* पुलिस स्टेशन का नाम\n*पंक्ति 5:* विवरण\n\n*उदाहरण:*\nसुनीता देवी\n9876543214\nनहर रोड, कडमा\nकडमा थाना\nहर शाम नहर रोड पर अवैध शराब की बिक्री हो रही है।\n\nकृपया पूरी जानकारी भेजें।`,
         },
         sub_info_other: {
-            english: `ℹ️ *Any Other Information*\n\nPlease provide (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Mobile Number\n*Line 3:* Police Station Name\n*Line 4:* Information Details\n\n*Example:*\nNitesh Kumar\n9876543215\nSadar P.S.\nSuspicious people are moving around closed houses late at night.\n\nPlease reply with complete details.`,
-            hindi: `ℹ️ *कोई अन्य सूचना*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* पुलिस स्टेशन का नाम\n*पंक्ति 4:* सूचना का विवरण\n\n*उदाहरण:*\nनितेश कुमार\n9876543215\nसदर थाना\nरात में बंद घरों के आसपास संदिग्ध लोग घूमते दिख रहे हैं।\n\nकृपया पूरी जानकारी भेजें।`,
+            english: `ℹ️ *Any Other Information*\n\nPlease provide (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Mobile Number\n*Line 3:* Police Station Name\n*Line 4:* Information Details\n\n*Example:*\nNitesh Kumar\n9876543215\nSakchi P.S.\nSuspicious people are moving around closed houses late at night.\n\nPlease reply with complete details.`,
+            hindi: `ℹ️ *कोई अन्य सूचना*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* पुलिस स्टेशन का नाम\n*पंक्ति 4:* सूचना का विवरण\n\n*उदाहरण:*\nनितेश कुमार\n9876543215\nसाकची थाना\nरात में बंद घरों के आसपास संदिग्ध लोग घूमते दिख रहे हैं।\n\nकृपया पूरी जानकारी भेजें।`,
         },
     };
 

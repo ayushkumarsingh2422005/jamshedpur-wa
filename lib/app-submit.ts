@@ -332,7 +332,7 @@ export async function submitAppComplaint(
     if (isInfo) {
         message =
             language === 'english'
-                ? 'Thank you. Your information has been received. Hazaribagh Police appreciates your cooperation.'
+                ? 'Thank you. Your information has been received. Jamshedpur Police appreciates your cooperation.'
                 : 'धन्यवाद। आपकी सूचना प्राप्त हो गई है।';
     } else if (isMissing) {
         message =

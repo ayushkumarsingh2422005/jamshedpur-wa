@@ -191,7 +191,7 @@ export function DashboardOverview({ overview }: { overview: DashboardOverview })
         <div className="space-y-6">
             <PageHeader
                 title="Dashboard"
-                subtitle="Hazaribagh Police · Monitoring"
+                subtitle="Jamshedpur Police · Monitoring"
                 meta={
                     <span className="text-sm text-slate-500 dark:text-slate-400">
                         Live overview of complaints, chats, and district services

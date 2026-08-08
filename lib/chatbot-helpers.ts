@@ -43,8 +43,8 @@ export const COMPLAINT_TYPES_EXCLUDED_FROM_MY_ACTIVITIES = new Set<string>([
 
 function buildInformationThankYou(language: 'english' | 'hindi'): string {
     return language === 'english'
-        ? `✅ *Thank you*\n\nYour information has been received. Hazaribagh Police appreciates your cooperation.`
-        : `✅ *धन्यवाद*\n\nआपकी सूचना प्राप्त हो गई है। हजारीबाग पुलिस आपके सहयोग के लिए धन्यवाद।`;
+        ? `✅ *Thank you*\n\nYour information has been received. Jamshedpur Police appreciates your cooperation.`
+        : `✅ *धन्यवाद*\n\nआपकी सूचना प्राप्त हो गई है। जमशेदपुर पुलिस आपके सहयोग के लिए धन्यवाद।`;
 }
 
 /** Info types saved immediately after the text form (no GPS step). */
@@ -76,7 +76,7 @@ function validateInfoForm(
                 isValid: false,
                 errorMessage:
                     language === 'english'
-                        ? `❌ *Incomplete Information*\n\nPlease provide (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Mobile Number\n*Line 3:* Adebazi Details\n*Line 4:* Place of Adebazi\n*Line 5:* Police Station Name\n\n*Example:*\nRavi Kumar\n9876543210\nLocal youths gather and create nuisance daily\nKorra market area\nSadar P.S.\n\nPlease try again.`
+                        ? `❌ *Incomplete Information*\n\nPlease provide (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Mobile Number\n*Line 3:* Adebazi Details\n*Line 4:* Place of Adebazi\n*Line 5:* Police Station Name\n\n*Example:*\nRavi Kumar\n9876543210\nLocal youths gather and create nuisance daily\nGolmuri market area\nSakchi P.S.\n\nPlease try again.`
                         : `❌ *अधूरी जानकारी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* अड्डेबाजी का विवरण\n*पंक्ति 4:* अड्डेबाजी का स्थान\n*पंक्ति 5:* पुलिस स्टेशन का नाम\n\nकृपया पुनः प्रयास करें।`,
             };
         }
@@ -244,8 +244,8 @@ function validatePassportCharacterForm(
             isValid: false,
             errorMessage:
                 language === 'english'
-                    ? `❌ *Incomplete Information*\n\nPlease provide (one per line):\n\n*Line 1:* Name of Applicant\n*Line 2:* ${appLabelEn}\n*Line 3:* Locality / Village\n*Line 4:* Mobile Number\n*Line 5:* Police Station Name\n*Line 6:* ${detailLabelEn}\n\n*Example:*\nRahul Kumar\nAB1234567\nKatkamsandi\n9876543210\nSadar P.S.\nVerification pending for 2 months\n\nPlease try again.`
-                    : `❌ *अधूरी जानकारी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आवेदक का नाम\n*पंक्ति 2:* ${appLabelHi}\n*पंक्ति 3:* इलाका / गाँव\n*पंक्ति 4:* मोबाइल नंबर\n*पंक्ति 5:* पुलिस स्टेशन का नाम\n*पंक्ति 6:* ${detailLabelHi}\n\n*उदाहरण:*\nराहुल कुमार\nAB1234567\nकटकमसंडी\n9876543210\nसदर थाना\n2 महीने से सत्यापन लंबित\n\nकृपया पुनः प्रयास करें।`,
+                    ? `❌ *Incomplete Information*\n\nPlease provide (one per line):\n\n*Line 1:* Name of Applicant\n*Line 2:* ${appLabelEn}\n*Line 3:* Locality / Village\n*Line 4:* Mobile Number\n*Line 5:* Police Station Name\n*Line 6:* ${detailLabelEn}\n\n*Example:*\nRahul Kumar\nAB1234567\nKadma\n9876543210\nSakchi P.S.\nVerification pending for 2 months\n\nPlease try again.`
+                    : `❌ *अधूरी जानकारी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आवेदक का नाम\n*पंक्ति 2:* ${appLabelHi}\n*पंक्ति 3:* इलाका / गाँव\n*पंक्ति 4:* मोबाइल नंबर\n*पंक्ति 5:* पुलिस स्टेशन का नाम\n*पंक्ति 6:* ${detailLabelHi}\n\n*उदाहरण:*\nराहुल कुमार\nAB1234567\nकडमा\n9876543210\nसाकची थाना\n2 महीने से सत्यापन लंबित\n\nकृपया पुनः प्रयास करें।`,
         };
     }
 
@@ -291,8 +291,8 @@ export function validateFormInput(
             return {
                 isValid: false,
                 errorMessage: language === 'english'
-                    ? `❌ *Incomplete Information*\n\nPlease provide:\n\n*Line 1:* Your Name\n*Line 2:* Father's Name\n*Line 3:* Address\n*Line 4:* Mobile Number\n*Line 5:* Issue Details\n\n*Example:*\nAmit Singh\nRakesh Singh\nWard 5, Hazaribagh\n9876543210\nPolice did not visit regarding my petition filed 5 days ago\n\nPlease try again.`
-                    : `❌ *अधूरी जानकारी*\n\nकृपया प्रदान करें:\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* पिता का नाम\n*पंक्ति 3:* पता\n*पंक्ति 4:* मोबाइल नंबर\n*पंक्ति 5:* समस्या विवरण\n\n*उदाहरण:*\nअमित सिंह\nराकेश सिंह\nवार्ड 5, हजारीबाग\n9876543210\n5 दिन पहले दायर याचिका के संबंध में पुलिस नहीं आई\n\nकृपया पुनः प्रयास करें।`,
+                    ? `❌ *Incomplete Information*\n\nPlease provide:\n\n*Line 1:* Your Name\n*Line 2:* Father's Name\n*Line 3:* Address\n*Line 4:* Mobile Number\n*Line 5:* Issue Details\n\n*Example:*\nAmit Singh\nRakesh Singh\nWard 5, Sakchi, Jamshedpur\n9876543210\nPolice did not visit regarding my petition filed 5 days ago\n\nPlease try again.`
+                    : `❌ *अधूरी जानकारी*\n\nकृपया प्रदान करें:\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* पिता का नाम\n*पंक्ति 3:* पता\n*पंक्ति 4:* मोबाइल नंबर\n*पंक्ति 5:* समस्या विवरण\n\n*उदाहरण:*\nअमित सिंह\nराकेश सिंह\nवार्ड 5, साकची, जमशेदपुर\n9876543210\n5 दिन पहले दायर याचिका के संबंध में पुलिस नहीं आई\n\nकृपया पुनः प्रयास करें।`,
             };
         }
 
@@ -338,8 +338,8 @@ export function validateFormInput(
             return {
                 isValid: false,
                 errorMessage: language === 'english'
-                    ? `❌ *Incomplete Information*\n\nPlease provide (one per line):\n\n*Line 1:* Name\n*Line 2:* Mobile Number\n*Line 3:* Traffic Jam Location\n*Line 4:* Police Station Name\n*Line 5:* Remarks\n\n*Example:*\nRajeev Kumar\n9876543213\nTower Chowk\nSadar P.S.\nHeavy traffic congestion for the last hour\n\nPlease try again.`
-                    : `❌ *अधूरी जानकारी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* ट्रैफ़िक जाम का स्थान\n*पंक्ति 4:* पुलिस स्टेशन का नाम\n*पंक्ति 5:* टिप्पणी\n\n*उदाहरण:*\nराजीव कुमार\n9876543213\nटावर चौक\nसदर थाना\nपिछले एक घंटे से भारी ट्रैफ़िक जाम है\n\nकृपया पुनः प्रयास करें।`,
+                    ? `❌ *Incomplete Information*\n\nPlease provide (one per line):\n\n*Line 1:* Name\n*Line 2:* Mobile Number\n*Line 3:* Traffic Jam Location\n*Line 4:* Police Station Name\n*Line 5:* Remarks\n\n*Example:*\nRajeev Kumar\n9876543213\nBistupur\nSakchi P.S.\nHeavy traffic congestion for the last hour\n\nPlease try again.`
+                    : `❌ *अधूरी जानकारी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* ट्रैफ़िक जाम का स्थान\n*पंक्ति 4:* पुलिस स्टेशन का नाम\n*पंक्ति 5:* टिप्पणी\n\n*उदाहरण:*\nराजीव कुमार\n9876543213\nबिस्तुपुर\nसाकची थाना\nपिछले एक घंटे से भारी ट्रैफ़िक जाम है\n\nकृपया पुनः प्रयास करें।`,
             };
         }
 
@@ -433,8 +433,8 @@ export function validateFormInput(
             return {
                 isValid: false,
                 errorMessage: language === 'english'
-                    ? `❌ *Incomplete Information*\n\nPlease provide (one per line):\n\n*Line 1:* Name\n*Line 2:* Your Mobile Number\n*Line 3:* Lost Mobile Number\n*Line 4:* IMEI Number\n*Line 5:* Police Station Name\n\n*Example:*\nSanjay Sharma\n9876543210\n9876543211\n359123456789012\nSadar P.S.\n\nPlease try again.`
-                    : `❌ *अधूरी जानकारी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* नाम\n*पंक्ति 2:* आपका मोबाइल नंबर\n*पंक्ति 3:* खोया मोबाइल नंबर\n*पंक्ति 4:* IMEI नंबर\n*पंक्ति 5:* पुलिस स्टेशन का नाम\n\n*उदाहरण:*\nसंजय शर्मा\n9876543210\n9876543211\n359123456789012\nसदर थाना\n\nकृपया पुनः प्रयास करें।`,
+                    ? `❌ *Incomplete Information*\n\nPlease provide (one per line):\n\n*Line 1:* Name\n*Line 2:* Your Mobile Number\n*Line 3:* Lost Mobile Number\n*Line 4:* IMEI Number\n*Line 5:* Police Station Name\n\n*Example:*\nSanjay Sharma\n9876543210\n9876543211\n359123456789012\nSakchi P.S.\n\nPlease try again.`
+                    : `❌ *अधूरी जानकारी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* नाम\n*पंक्ति 2:* आपका मोबाइल नंबर\n*पंक्ति 3:* खोया मोबाइल नंबर\n*पंक्ति 4:* IMEI नंबर\n*पंक्ति 5:* पुलिस स्टेशन का नाम\n\n*उदाहरण:*\nसंजय शर्मा\n9876543210\n9876543211\n359123456789012\nसाकची थाना\n\nकृपया पुनः प्रयास करें।`,
             };
         }
 
@@ -486,8 +486,8 @@ export function validateFormInput(
             return {
                 isValid: false,
                 errorMessage: language === 'english'
-                    ? `❌ *Incomplete Information*\n\nPlease provide:\n\n*Line 1:* Name\n*Line 2:* Father's Name\n*Line 3:* Address\n*Line 4:* Mobile Number\n*Line 5:* Concerned Police Station\n*Line 6:* Report issue\n\n*Example:*\nKamal Roy\nBijay Roy\nSadar, Hazaribagh\n9876543210\nCyber P.S.\nAmount fraudulently deducted from my account\n\nPlease try again.`
-                    : `❌ *अधूरी जानकारी*\n\nकृपया प्रदान करें:\n\n*पंक्ति 1:* नाम\n*पंक्ति 2:* पिता का नाम\n*पंक्ति 3:* पता\n*पंक्ति 4:* मोबाइल नंबर\n*पंक्ति 5:* संबंधित पुलिस स्टेशन\n*पंक्ति 6:* समस्या विवरण\n\n*उदाहरण:*\nकमल रॉय\nबिजय रॉय\nसदर, हजारीबाग\n9876543210\nसाइबर पीएस\nमेरे खाते से धोखाधड़ी से पैसे काटे गए\n\nकृपया पुनः प्रयास करें।`,
+                    ? `❌ *Incomplete Information*\n\nPlease provide:\n\n*Line 1:* Name\n*Line 2:* Father's Name\n*Line 3:* Address\n*Line 4:* Mobile Number\n*Line 5:* Concerned Police Station\n*Line 6:* Report issue\n\n*Example:*\nKamal Roy\nBijay Roy\nSakchi, Jamshedpur\n9876543210\nCyber P.S.\nAmount fraudulently deducted from my account\n\nPlease try again.`
+                    : `❌ *अधूरी जानकारी*\n\nकृपया प्रदान करें:\n\n*पंक्ति 1:* नाम\n*पंक्ति 2:* पिता का नाम\n*पंक्ति 3:* पता\n*पंक्ति 4:* मोबाइल नंबर\n*पंक्ति 5:* संबंधित पुलिस स्टेशन\n*पंक्ति 6:* समस्या विवरण\n\n*उदाहरण:*\nकमल रॉय\nबिजय रॉय\nसाकची, जमशेदपुर\n9876543210\nसाइबर पीएस\nमेरे खाते से धोखाधड़ी से पैसे काटे गए\n\nकृपया पुनः प्रयास करें।`,
             };
         }
         return {
@@ -508,8 +508,8 @@ export function validateFormInput(
             return {
                 isValid: false,
                 errorMessage: language === 'english'
-                    ? `❌ *Incomplete Information*\n\nPlease provide (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Mobile Number\n*Line 3:* Police Station Name\n*Line 4:* Lost / Last Seen Address\n*Line 5:* Missing Person Details\n\n*Example:*\nAnita Kumari\n9876543210\nSadar P.S.\nLake Road area, near Tower Chowk, Hazaribagh\nMy younger brother (age 17) is missing since yesterday evening.\n\nPlease try again.`
-                    : `❌ *अधूरी जानकारी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* पुलिस स्टेशन का नाम\n*पंक्ति 4:* लापता / अंतिम बार देखा गया पता\n*पंक्ति 5:* लापता व्यक्ति का विवरण\n\n*उदाहरण:*\nअनीता कुमारी\n9876543210\nसदर थाना\nलेक रोड क्षेत्र, टावर चौक के पास, हजारीबाग\nमेरा छोटा भाई (उम्र 17 वर्ष) कल शाम से लापता है।\n\nकृपया पुनः प्रयास करें।`,
+                    ? `❌ *Incomplete Information*\n\nPlease provide (one per line):\n\n*Line 1:* Your Name\n*Line 2:* Mobile Number\n*Line 3:* Police Station Name\n*Line 4:* Lost / Last Seen Address\n*Line 5:* Missing Person Details\n\n*Example:*\nAnita Kumari\n9876543210\nSakchi P.S.\nBistupur area, near Sakchi, Jamshedpur\nMy younger brother (age 17) is missing since yesterday evening.\n\nPlease try again.`
+                    : `❌ *अधूरी जानकारी*\n\nकृपया प्रदान करें (प्रति पंक्ति एक):\n\n*पंक्ति 1:* आपका नाम\n*पंक्ति 2:* मोबाइल नंबर\n*पंक्ति 3:* पुलिस स्टेशन का नाम\n*पंक्ति 4:* लापता / अंतिम बार देखा गया पता\n*पंक्ति 5:* लापता व्यक्ति का विवरण\n\n*उदाहरण:*\nअनीता कुमारी\n9876543210\nसाकची थाना\nबिस्तुपुर क्षेत्र, साकची के पास, जमशेदपुर\nमेरा छोटा भाई (उम्र 17 वर्ष) कल शाम से लापता है।\n\nकृपया पुनः प्रयास करें।`,
             };
         }
 
