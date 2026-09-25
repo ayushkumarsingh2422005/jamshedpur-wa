@@ -1,0 +1,145 @@
+{
+  "Sitaramdera": null,
+  "Sidhgora": {
+    "lat": 22.7989389,
+    "lon": 86.2302396,
+    "display": "Sidhgora Park, Jamshedpur, Golmuri-Cum-Jugsalai, East Singhbhum, Jharkhand, 831001, India",
+    "approx": true
+  },
+  "Mango": {
+    "lat": 22.8254724,
+    "lon": 86.2231192,
+    "display": "Lajwanti Textiles Mango, Dimna Road, Dimna, Jamshedpur, Golmuri-Cum-Jugsalai, East Singhbhum, Jharkhand, 831001, India",
+    "approx": true
+  },
+  "Kadma": {
+    "lat": 22.7983337,
+    "lon": 86.1723886,
+    "display": "Kadma Police Station, Inner Circle Road, Jamshedpur, Golmuri-Cum-Jugsalai, East Singhbhum, Jharkhand, 831001, India"
+  },
+  "Sonari": {
+    "lat": 22.8102404,
+    "lon": 86.172299,
+    "display": "Kadma Sonari Link Road, Jamshedpur, Golmuri-Cum-Jugsalai, East Singhbhum, Jharkhand, 831001, India",
+    "approx": true
+  },
+  "Sakchi": null,
+  "Telco": {
+    "lat": 22.7683839,
+    "lon": 86.2558816,
+    "display": "Telco Main Hospital, Vijaya Gardens Road, Jamshedpur, Golmuri-Cum-Jugsalai, East Singhbhum, Jharkhand, 831001, India",
+    "approx": true
+  },
+  "Golmuri": {
+    "lat": 22.7666472,
+    "lon": 86.3096368,
+    "display": "Golmuri-Cum-Jugsalai, East Singhbhum, Jharkhand, India",
+    "approx": true
+  },
+  "Burma Mines": null,
+  "Govindpur": {
+    "lat": 22.742798,
+    "lon": 86.260725,
+    "display": "Govindpur, Vijaya Gardens Road, Jamshedpur, Golmuri-Cum-Jugsalai, East Singhbhum, Jharkhand, 831001, India",
+    "approx": true
+  },
+  "Birsanagar": null,
+  "Jugsalai": {
+    "lat": 22.7826968,
+    "lon": 86.1847328,
+    "display": "Jugsalai Police Station, SH6, jugsalai phatak, Jamshedpur, Golmuri-Cum-Jugsalai, East Singhbhum, Jharkhand, 831006, India"
+  },
+  "Parsudih": {
+    "lat": 22.7556816,
+    "lon": 86.2154572,
+    "display": "Government School,Parsudih, SH6, Jamshedpur, Golmuri-Cum-Jugsalai, East Singhbhum, Jharkhand, 831001, India",
+    "approx": true
+  },
+  "Bagbera": null,
+  "Sundarnagar": null,
+  "Bistupur": {
+    "lat": 22.7979889,
+    "lon": 86.1844592,
+    "display": "Bistupur Police Station., Kharkai Link Road, Jamshedpur, Golmuri-Cum-Jugsalai, East Singhbhum, Jharkhand, 831001, India"
+  },
+  "Ghatshila": {
+    "lat": 22.6650418,
+    "lon": 86.507034,
+    "display": "Ghatshila, East Singhbhum, Jharkhand, India",
+    "approx": true
+  },
+  "Galudih": {
+    "lat": 22.6480073,
+    "lon": 86.4115668,
+    "display": "Galudih, MDR171, Chorinda, Mahulia, Ghatshila, East Singhbhum, Jharkhand, 832304, India",
+    "approx": true
+  },
+  "Shyamsundarpur": null,
+  "Baharagora": {
+    "lat": 22.3162862,
+    "lon": 86.7539176,
+    "display": "Baharagora, East Singhbhum, Jharkhand, 832101, India",
+    "approx": true
+  },
+  "Chakulia": {
+    "lat": 22.4728207,
+    "lon": 86.6763429,
+    "display": "Chakulia, East Singhbhum, Jharkhand, India",
+    "approx": true
+  },
+  "Barsol": null,
+  "Dhalbhumgarh": {
+    "lat": 22.5174333,
+    "lon": 86.5439256,
+    "display": "Dhalbhumgarh, East Singhbhum, Jharkhand, 832302, India",
+    "approx": true
+  },
+  "MGM": {
+    "lat": 22.8434993,
+    "lon": 86.2311662,
+    "display": "MGM Pond, Dimna, Jamshedpur, Golmuri-Cum-Jugsalai, East Singhbhum, Jharkhand, 831001, India",
+    "approx": true
+  },
+  "Azadnagar": null,
+  "Patamda": {
+    "lat": 22.8951218,
+    "lon": 86.3864397,
+    "display": "Patamda, East Singhbhum, Jharkhand, India",
+    "approx": true
+  },
+  "Kamalpur": null,
+  "Bodam": null,
+  "Gudabanda": null,
+  "Jadugora": {
+    "lat": 22.6556344,
+    "lon": 86.349953,
+    "display": "Jaduguda, Musabani, East Singhbhum, Jharkhand, 832102, India",
+    "approx": true
+  },
+  "Musabani": {
+    "lat": 22.5586862,
+    "lon": 86.409668,
+    "display": "Musabani, East Singhbhum, Jharkhand, India",
+    "approx": true
+  },
+  "Potka": {
+    "lat": 22.5910615,
+    "lon": 86.2309635,
+    "display": "Potka, East Singhbhum, Jharkhand, India",
+    "approx": true
+  },
+  "Kowali": {
+    "lat": 22.5076013,
+    "lon": 86.1847186,
+    "display": "Kuy\u0101li, Potka, East Singhbhum, Jharkhand, India",
+    "approx": true
+  },
+  "Dumaria": {
+    "lat": 22.415829,
+    "lon": 86.4078292,
+    "display": "Dumaria, East Singhbhum, Jharkhand, India",
+    "approx": true
+  },
+  "Moubhandar": null,
+  "Olidih": null
+}
